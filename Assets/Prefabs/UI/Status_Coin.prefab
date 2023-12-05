@@ -124,6 +124,8 @@ GameObject:
   - component: {fileID: 6229552277985286078}
   - component: {fileID: 5039617450788969280}
   - component: {fileID: 2170652346020406420}
+  - component: {fileID: 3663084013456487521}
+  - component: {fileID: 6091819364622288683}
   m_Layer: 0
   m_Name: Status_Coin
   m_TagString: Untagged
@@ -205,6 +207,31 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.050980393}
   m_EffectDistance: {x: 0, y: -6}
   m_UseGraphicAlpha: 1
+--- !u!114 &3663084013456487521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3841783595233644052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26a132585645acc498e63d9d2b251822, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6091819364622288683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3841783595233644052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb00f80fd690a743b115e0689d3690f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _amtField: {fileID: 3644018988740053276}
 --- !u!1 &8965870110184207855
 GameObject:
   m_ObjectHideFlags: 0
