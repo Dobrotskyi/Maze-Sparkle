@@ -1,14 +1,14 @@
+using TMPro;
 using UnityEngine;
 
 
 public class DragAndShoot : MonoBehaviour
 {
+    private const int SENSETIVITY_SCALE = 12;
     [Header("Movement")]
     public float maxPower;
     [Tooltip("Set gravity to 0 if you want a top down ball game like billiardo.")]
     public float gravity = 1;
-    [Tooltip("Slow the ball movement while aiming to make it easier to aim.")]
-    [Range(0f, 0.1f)] public float slowMotion;
 
     [Tooltip("Allows you to aim and shot even when the ball is still moving.")]
     public bool shootWhileMoving = false;
@@ -18,6 +18,8 @@ public class DragAndShoot : MonoBehaviour
     public bool showLineOnScreen = false;
     [Tooltip("Allow you to click whenever in the screen to start aiming, turn it off if you only want to start aiming while clicking in the ball")]
     public bool freeAim = true;
+    [Range(0, 1)]
+    [SerializeField] private float _slowMotion = 0.7f;
 
     Transform direction;
     Rigidbody2D rb;
@@ -33,7 +35,9 @@ public class DragAndShoot : MonoBehaviour
     float shootPower;
     bool canShoot = true;
 
-    [SerializeField] private float minVelocity = 0.5f;
+    [SerializeField] private float _minVelocity = 0.5f;
+    [SerializeField] private GameObject _shadowPrefab;
+    [SerializeField] private GameObject _shadowBouncinesField;
     private bool _shadowWasShot;
 
     void OnEnable()
@@ -43,6 +47,9 @@ public class DragAndShoot : MonoBehaviour
         line = GetComponent<LineRenderer>();
         direction = transform.GetChild(0);
         screenLine = direction.GetComponent<LineRenderer>();
+
+        if (_shadowBouncinesField.activeSelf)
+            _shadowBouncinesField.SetActive(false);
     }
 
     private bool TouchBegan()
@@ -76,8 +83,6 @@ public class DragAndShoot : MonoBehaviour
             // if (EventSystem.current.currentSelectedGameObject) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
             MouseDrag();
 
-            if (shootWhileMoving) rb.velocity /= (1 + slowMotion);
-
         }
 
         if ((Input.GetMouseButtonUp(0) || TouchReleased()) && isAiming)
@@ -88,12 +93,13 @@ public class DragAndShoot : MonoBehaviour
 
         if (!canShoot)
         {
-            if (rb.velocity.magnitude < minVelocity)
+            if (rb.velocity.magnitude < _minVelocity)
             {
-                float scale = (minVelocity + 0.1f) / rb.velocity.magnitude;
+                float scale = (_minVelocity + 0.1f) / rb.velocity.magnitude;
                 Vector2 newVelocity = rb.velocity.normalized * scale;
                 if (float.IsNaN(newVelocity.x) || float.IsNaN(newVelocity.y))
                     return;
+
                 rb.velocity = newVelocity;
             }
         }
@@ -103,6 +109,17 @@ public class DragAndShoot : MonoBehaviour
         //    rb.velocity = new Vector2(0, 0); //ENABLE THIS IF YOU WANT THE BALL TO STOP IF ITS MOVING SO SLOW
         //    canShoot = true;
         //}
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!canShoot)
+        {
+            if (rb.velocity.magnitude < _minVelocity / 2f)
+            {
+                rb.AddForce(0.1f * ((Vector2)transform.position - collision.contacts[0].point), ForceMode2D.Impulse);
+            }
+        }
     }
 
     private bool objectClicked()
@@ -121,9 +138,7 @@ public class DragAndShoot : MonoBehaviour
     // MOUSE INPUTS
     void MouseClick()
     {
-
         isAiming = true;
-
         if (shootWhileMoving)
         {
             //Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
@@ -137,9 +152,11 @@ public class DragAndShoot : MonoBehaviour
         {
             if (canShoot)
             {
+                Time.timeScale = _slowMotion;
+
                 //Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
                 Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                transform.right = dir * 1;
+                //transform.right = dir * 1;
 
                 //startMousePos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
                 startMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -149,12 +166,16 @@ public class DragAndShoot : MonoBehaviour
             {
                 if (!_shadowWasShot)
                 {
+                    Time.timeScale = _slowMotion;
+
                     //Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
                     Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    transform.right = dir * 1;
+                    //transform.right = dir * 1;
 
                     //startMousePos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
                     startMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                    _shadowBouncinesField.SetActive(true);
                 }
             }
         }
@@ -198,7 +219,7 @@ public class DragAndShoot : MonoBehaviour
 
         if (shootWhileMoving)
         {
-            LookAtShootDirection();
+            Aim();
             DrawLine();
 
             if (showLineOnScreen)
@@ -218,7 +239,7 @@ public class DragAndShoot : MonoBehaviour
         {
             if (canShoot || !_shadowWasShot)
             {
-                LookAtShootDirection();
+                Aim();
                 DrawLine();
 
                 if (showLineOnScreen)
@@ -260,58 +281,60 @@ public class DragAndShoot : MonoBehaviour
                     ShootShadow();
                     screenLine.enabled = false;
                     line.enabled = false;
+                    _shadowBouncinesField.SetActive(false);
                 }
             }
         }
 
         isAiming = false;
 
+        Time.timeScale = 1.0f;
     }
 
 
     // ACTIONS  
-    void LookAtShootDirection()
+    void Aim()
     {
-        Vector3 dir = startMousePos - currentMousePos;
+        Vector2 dir = startMousePos - currentMousePos;
 
-        if (forwardDraging)
-        {
-            transform.right = dir * -1;
-        }
-        else
-        {
-            transform.right = dir;
-        }
+        //if (forwardDraging)
+        //{
+        //    transform.right = dir * -1;
+        //}
+        //else
+        //{
+        //    transform.right = dir;
+        //}
 
 
-        float dis = Vector2.Distance(startMousePos, currentMousePos);
-        dis *= 4;
+        float dis = Vector2.Distance(currentMousePos, startMousePos);
+        dis *= SENSETIVITY_SCALE;
 
 
         if (dis < maxPower)
         {
-            direction.localPosition = new Vector2(dis / 6, 0);
+            direction.localPosition = dir.normalized * (dis / 6);
             shootPower = dis;
         }
         else
         {
             shootPower = maxPower;
-            direction.localPosition = new Vector2(maxPower / 6, 0);
+            direction.localPosition = dir.normalized * (maxPower / 6);
         }
 
     }
     private void Shoot()
     {
         canShoot = false;
-        rb.velocity = transform.right * shootPower;
+        rb.velocity = (direction.position - transform.position).normalized * shootPower;
     }
 
     private void ShootShadow()
     {
         _shadowWasShot = true;
-        GameObject shadow = Instantiate(this.gameObject, transform.position, Quaternion.identity);
+        GameObject shadow = Instantiate(_shadowPrefab, transform.position, Quaternion.identity);
         Rigidbody2D shadowRb = shadow.GetComponent<Rigidbody2D>();
-        shadowRb.velocity = transform.right * shootPower;
+        shadowRb.velocity = (direction.position - transform.position).normalized * shootPower;
         shadow.GetComponent<DragAndShoot>().IAmShadow();
     }
 
@@ -322,12 +345,6 @@ public class DragAndShoot : MonoBehaviour
         screenLine.enabled = false;
         line.enabled = false;
     }
-
-    private void DisableScreenLine()
-    {
-        screenLine.enabled = false;
-    }
-
 
     void DrawScreenLine()
     {
