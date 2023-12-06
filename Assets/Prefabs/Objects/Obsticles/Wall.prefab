@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5489237716492444125}
   - component: {fileID: 2115069501460735385}
   - component: {fileID: 4961982717278235186}
+  - component: {fileID: 6727296302451562499}
   m_Layer: 3
   m_Name: Wall
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 3031074489767183503}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.66, y: 0.1436, z: -0.5707397}
+  m_LocalPosition: {x: -2.66, y: 0.1436, z: 0}
   m_LocalScale: {x: 0.534518, y: 10.189181, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -130,3 +131,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &6727296302451562499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3031074489767183503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c304a90527be79940b84e7e9e7336686, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _collisionEffectPrefab: {fileID: 2456245699118923262, guid: 8e5fa1849486c1d46940dc3bc3ebb550, type: 3}

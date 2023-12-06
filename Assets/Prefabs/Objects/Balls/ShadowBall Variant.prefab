@@ -253,3 +253,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bouncesLeftField: {fileID: 8906510007198427050}
   _destroyingEffect: {fileID: 7485119826907495163, guid: bc39da201042b5e47833da1d5b7ed317, type: 3}
+  _maxTouches: 5
+  _destroyAfter0: 1

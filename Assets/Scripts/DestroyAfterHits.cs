@@ -1,11 +1,13 @@
 using TMPro;
 using UnityEngine;
 
-public class Shadow : MonoBehaviour
+public class DestroyAfterHits : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _bouncesLeftField;
     [SerializeField] private ParticleSystem _destroyingEffect;
-    private int _maxTouches = 5;
+    [SerializeField] private int _maxTouches = 5;
+    [SerializeField] private bool _destroyAfter0;
+
     public int TouchesLeft { get; private set; }
 
     private void OnEnable()
@@ -17,7 +19,8 @@ public class Shadow : MonoBehaviour
     private void OnCollisionExit2D(Collision2D collision)
     {
         TouchesLeft--;
-        if (TouchesLeft < 0)
+
+        if ((!_destroyAfter0 && TouchesLeft == 0) || TouchesLeft < 0)
         {
             DestroySelf();
             return;

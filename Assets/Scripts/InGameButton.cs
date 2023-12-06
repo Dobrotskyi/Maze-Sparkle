@@ -11,6 +11,8 @@ public class InGameButton : MonoBehaviour
     {
         _statusOn.SetActive(false);
         _statusOff.SetActive(true);
+        foreach (var door in _doors)
+            door.AddToOpenButtons();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -18,7 +20,7 @@ public class InGameButton : MonoBehaviour
         if (collision.gameObject.CompareTag("Ball") && _statusOff.activeSelf)
         {
             foreach (Door door in _doors)
-                door.Open();
+                door.ButtonPressed();
             _statusOff.SetActive(false);
             _statusOn.SetActive(true);
         }

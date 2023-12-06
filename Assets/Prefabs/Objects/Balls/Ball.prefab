@@ -415,7 +415,6 @@ GameObject:
   - component: {fileID: 1106648295646618820}
   - component: {fileID: 3493987431397636989}
   - component: {fileID: 4718838313414953566}
-  - component: {fileID: 8098324648483573916}
   m_Layer: 6
   m_Name: Ball
   m_TagString: Ball
@@ -801,16 +800,3 @@ MonoBehaviour:
   _minVelocity: 0.5
   _shadowPrefab: {fileID: 8975340537429394510}
   _shadowBouncinesField: {fileID: 2793827284497056325}
---- !u!114 &8098324648483573916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8975340537429394510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19fcc23e965042a42aa2d9bd5ed2f0ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _wallHitEffect: {fileID: 2456245699118923262, guid: 8e5fa1849486c1d46940dc3bc3ebb550, type: 3}
