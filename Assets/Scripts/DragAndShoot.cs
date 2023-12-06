@@ -1,10 +1,10 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-
+using UnityEngine.EventSystems;
 
 public class DragAndShoot : MonoBehaviour
 {
-    private const int SENSETIVITY_SCALE = 12;
     [Header("Movement")]
     public float maxPower;
     [Tooltip("Set gravity to 0 if you want a top down ball game like billiardo.")]
@@ -38,6 +38,8 @@ public class DragAndShoot : MonoBehaviour
     [SerializeField] private float _minVelocity = 0.5f;
     [SerializeField] private GameObject _shadowPrefab;
     [SerializeField] private GameObject _shadowBouncinesField;
+    [SerializeField] private int _sensitivityScale = 12;
+    [SerializeField] private float _tailLineDivider = 3;
     private bool _shadowWasShot;
 
     void OnEnable()
@@ -72,7 +74,8 @@ public class DragAndShoot : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) || TouchBegan())
         {
-            // if (EventSystem.current.currentSelectedGameObject) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
+
+            if (IsOverUI()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
             if (freeAim)
                 MouseClick();
             else
@@ -80,14 +83,14 @@ public class DragAndShoot : MonoBehaviour
         }
         if ((Input.GetMouseButton(0) || TouchDragged()) && isAiming)
         {
-            // if (EventSystem.current.currentSelectedGameObject) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
+            if (IsOverUI()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
             MouseDrag();
 
         }
 
         if ((Input.GetMouseButtonUp(0) || TouchReleased()) && isAiming)
         {
-            // if (EventSystem.current.currentSelectedGameObject) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
+            if (IsOverUI()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
             MouseRelease();
         }
 
@@ -109,6 +112,48 @@ public class DragAndShoot : MonoBehaviour
         //    rb.velocity = new Vector2(0, 0); //ENABLE THIS IF YOU WANT THE BALL TO STOP IF ITS MOVING SO SLOW
         //    canShoot = true;
         //}
+    }
+
+    private bool IsOverUI()
+    {
+        PointerEventData pointerEventData = new(EventSystem.current);
+
+        foreach (var touch in Input.touches)
+        {
+            pointerEventData.position = touch.position;
+            List<RaycastResult> raycastResultsTouch = new();
+            EventSystem.current.RaycastAll(pointerEventData, raycastResultsTouch);
+            for (int i = 0; i < raycastResultsTouch.Count; i++)
+            {
+                if (raycastResultsTouch[i].gameObject.GetComponent<UIClickThrough>() != null)
+                {
+                    raycastResultsTouch.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            if (raycastResultsTouch.Count > 0)
+                return true;
+        }
+
+
+        //MouseInput
+        pointerEventData.position = Input.mousePosition;
+        List<RaycastResult> raycastResults = new();
+        EventSystem.current.RaycastAll(pointerEventData, raycastResults);
+        for (int i = 0; i < raycastResults.Count; i++)
+        {
+            if (raycastResults[i].gameObject.GetComponent<UIClickThrough>() != null)
+            {
+                raycastResults.RemoveAt(i);
+                i--;
+            }
+        }
+        if (raycastResults.Count > 0) return true;
+
+
+
+        return false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -308,18 +353,18 @@ public class DragAndShoot : MonoBehaviour
 
 
         float dis = Vector2.Distance(currentMousePos, startMousePos);
-        dis *= SENSETIVITY_SCALE;
+        dis *= _sensitivityScale;
 
 
         if (dis < maxPower)
         {
-            direction.localPosition = dir.normalized * (dis / 6);
+            direction.localPosition = dir.normalized * (dis / _tailLineDivider);
             shootPower = dis;
         }
         else
         {
             shootPower = maxPower;
-            direction.localPosition = dir.normalized * (maxPower / 6);
+            direction.localPosition = dir.normalized * (maxPower / _tailLineDivider);
         }
 
     }
