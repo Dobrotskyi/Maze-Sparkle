@@ -35,6 +35,8 @@ public class DragAndShoot : MonoBehaviour
     float shootPower;
     bool canShoot = true;
 
+    public bool CanShootShadow;
+    public float SlowMotion => _slowMotion;
     [SerializeField] private float _minVelocity = 0.5f;
     [SerializeField] private GameObject _shadowPrefab;
     [SerializeField] private GameObject _shadowBouncinesField;
@@ -47,7 +49,7 @@ public class DragAndShoot : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = gravity;
         line = GetComponent<LineRenderer>();
-        direction = transform.GetChild(0);
+        direction = transform.Find("Direction");
         screenLine = direction.GetComponent<LineRenderer>();
 
         if (_shadowBouncinesField.activeSelf)
@@ -99,11 +101,23 @@ public class DragAndShoot : MonoBehaviour
             if (rb.velocity.magnitude < _minVelocity)
             {
                 float scale = (_minVelocity + 0.1f) / rb.velocity.magnitude;
-                Vector2 newVelocity = rb.velocity.normalized * scale;
+                Vector2 newVelocity = rb.velocity * scale;
                 if (float.IsNaN(newVelocity.x) || float.IsNaN(newVelocity.y))
                     return;
 
                 rb.velocity = newVelocity;
+            }
+        }
+
+        if (!CanShootShadow && !canShoot)
+        {
+            if (screenLine.gameObject.activeSelf)
+            {
+                screenLine.enabled = false;
+                line.enabled = false;
+                GameTimeScaler.ResetTimeScale();
+                isAiming = false;
+                _shadowBouncinesField.SetActive(false);
             }
         }
 
@@ -197,7 +211,7 @@ public class DragAndShoot : MonoBehaviour
         {
             if (canShoot)
             {
-                Time.timeScale = _slowMotion;
+                GameTimeScaler.ChangeTimeScale(_slowMotion);
 
                 //Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
                 Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -209,9 +223,9 @@ public class DragAndShoot : MonoBehaviour
 
             else
             {
-                if (!_shadowWasShot)
+                if (!_shadowWasShot && CanShootShadow)
                 {
-                    Time.timeScale = _slowMotion;
+                    GameTimeScaler.ChangeTimeScale(_slowMotion);
 
                     //Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
                     Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -282,7 +296,7 @@ public class DragAndShoot : MonoBehaviour
         }
         else
         {
-            if (canShoot || !_shadowWasShot)
+            if (canShoot || (!_shadowWasShot && CanShootShadow))
             {
                 Aim();
                 DrawLine();
@@ -321,7 +335,7 @@ public class DragAndShoot : MonoBehaviour
             }
             else
             {
-                if (!_shadowWasShot)
+                if (!_shadowWasShot && CanShootShadow)
                 {
                     ShootShadow();
                     screenLine.enabled = false;
@@ -333,7 +347,7 @@ public class DragAndShoot : MonoBehaviour
 
         isAiming = false;
 
-        Time.timeScale = 1.0f;
+        GameTimeScaler.ResetTimeScale();
     }
 
 
