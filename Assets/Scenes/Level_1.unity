@@ -2385,6 +2385,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4292212169530463826, guid: e458923f21745784caad60c3321fbc19, type: 3}
+      propertyPath: _rightSquare
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4292212169530463826, guid: e458923f21745784caad60c3321fbc19, type: 3}
       propertyPath: _distanseScale
       value: 5
       objectReference: {fileID: 0}
@@ -2420,9 +2424,29 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: -0.0000002682209
       objectReference: {fileID: 0}
+    - target: {fileID: 6162057184316192925, guid: e458923f21745784caad60c3321fbc19, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6232815165124312959, guid: e458923f21745784caad60c3321fbc19, type: 3}
+      propertyPath: m_Name
+      value: RightBox
+      objectReference: {fileID: 0}
     - target: {fileID: 6450389188883843904, guid: e458923f21745784caad60c3321fbc19, type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590259195381533061, guid: e458923f21745784caad60c3321fbc19, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7046454737158038000, guid: e458923f21745784caad60c3321fbc19, type: 3}
+      propertyPath: m_SortingOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7225567621946641129, guid: e458923f21745784caad60c3321fbc19, type: 3}
+      propertyPath: m_SortingOrder
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8618479966105236368, guid: e458923f21745784caad60c3321fbc19, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2472,7 +2496,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ball
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 9219792674936434313, guid: e458923f21745784caad60c3321fbc19, type: 3}
+      propertyPath: m_SortingOrder
+      value: 4
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7046454737158038000, guid: e458923f21745784caad60c3321fbc19, type: 3}
+    - {fileID: 7225567621946641129, guid: e458923f21745784caad60c3321fbc19, type: 3}
+    - {fileID: 9219792674936434313, guid: e458923f21745784caad60c3321fbc19, type: 3}
+    - {fileID: 6162057184316192925, guid: e458923f21745784caad60c3321fbc19, type: 3}
+    - {fileID: 6590259195381533061, guid: e458923f21745784caad60c3321fbc19, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
