@@ -4,6 +4,8 @@ public static class GameTimeScaler
 {
     public static void ChangeTimeScale(float scale)
     {
+        if (Time.timeScale != 1)
+            return;
         Time.timeScale = scale;
     }
 
