@@ -46,30 +46,31 @@ public class ShadowShotTrigger : MonoBehaviour
         RotateSideTriggersBase();
 
         float magnitudeScale = Mathf.Clamp(_rb.velocity.magnitude, _minMaxClampMagnitude.x, _minMaxClampMagnitude.y);
-        List<RaycastHit2D> triggerHits = new(3);
+        List<RaycastHit2D> raycastHits = new(3);
 
         _collisionTriggers[1].triggerTransform.localPosition = _rb.velocity.normalized * magnitudeScale;
         _collisionTriggers[0].triggerTransform.localPosition = new Vector2(0, _collisionTriggers[1].GetDistance() * 1.6f);
         _collisionTriggers[2].triggerTransform.localPosition = new Vector2(0, _collisionTriggers[1].GetDistance() * 1.6f);
         for (int i = 0; i < _collisionTriggers.Count; i++)
-            triggerHits.Add(Physics2D.Raycast(_collisionTriggers[i].baseTransform.position, _collisionTriggers[i].GetDirection(), _collisionTriggers[i].GetDistance(), _layerMask));
+            raycastHits.Add(Physics2D.Raycast(_collisionTriggers[i].baseTransform.position, _collisionTriggers[i].GetDirection(), _collisionTriggers[i].GetDistance(), _layerMask));
 
-        var hittedRays = triggerHits.Where(t => t.collider != null);
+        var hittedRays = raycastHits.Where(t => t.collider != null);
         if (hittedRays.Count() != 0)
         {
             float[] distances = new float[3];
-            for (int i = 0; i < triggerHits.Count(); i++)
+            for (int i = 0; i < raycastHits.Count(); i++)
             {
-                if (triggerHits[i].collider != null)
-                    distances[i] = Vector2.Distance(_collisionTriggers[i].baseTransform.position, triggerHits[i].point);
+                if (raycastHits[i].collider != null)
+                    distances[i] = Vector2.Distance(_collisionTriggers[i].baseTransform.position, raycastHits[i].point);
                 else
                     distances[i] = 999;
             }
             int minDistanceIndex = distances.MinValueIndex();
 
-            if (_objectToHit == null || (triggerHits[minDistanceIndex].transform.gameObject != _objectToHit))
+            if (_objectToHit == null || (raycastHits[minDistanceIndex].transform.gameObject != _objectToHit))
             {
-                _objectToHit = triggerHits[minDistanceIndex].transform.gameObject;
+                _objectToHit = raycastHits[minDistanceIndex].transform.gameObject;
+                StopAllCoroutines();
                 _dragAndShoot.CanShootShadow = true;
                 float slowMotion = Mathf.Clamp(_dragAndShoot.SlowMotion - 0.05f * magnitudeScale, 0.1f, _dragAndShoot.SlowMotion);
                 GameTimeScaler.ChangeTimeScale(slowMotion);
@@ -90,9 +91,17 @@ public class ShadowShotTrigger : MonoBehaviour
         _sideTriggersParent.up = _rb.velocity.normalized;
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        _rb.AddForce(-(collision.contacts[0].point - (Vector2)transform.position).normalized * 0.02f, ForceMode2D.Impulse);
+    }
+
     private void OnCollisionExit2D(Collision2D collision)
     {
-        StartCoroutine(DisableShadowShooting());
+        if (gameObject.activeSelf && _objectToHit != null)
+        {
+            StartCoroutine(DisableShadowShooting());
+        }
     }
 
     private IEnumerator DisableShadowShooting()

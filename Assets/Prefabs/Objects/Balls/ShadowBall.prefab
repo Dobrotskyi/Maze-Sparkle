@@ -232,8 +232,9 @@ GameObject:
   - component: {fileID: 3030636327270388087}
   - component: {fileID: 6456899314396845175}
   - component: {fileID: 4330211525887126957}
-  - component: {fileID: 4597690854283942170}
   - component: {fileID: 1211362193765476430}
+  - component: {fileID: 1638237946882178058}
+  - component: {fileID: 3107804247147126558}
   m_Layer: 6
   m_Name: ShadowBall
   m_TagString: Ball
@@ -598,31 +599,6 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 0
---- !u!114 &4597690854283942170
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1473785626436904362}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f5ddb281792687438da3aad8d987636, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxPower: 10
-  gravity: 0
-  shootWhileMoving: 0
-  forwardDraging: 0
-  showLineOnScreen: 1
-  freeAim: 1
-  _slowMotion: 0.305
-  CanShootShadow: 0
-  _minVelocity: 1.5
-  _shadowPrefab: {fileID: 1473785626436904362}
-  _shadowBouncinesField: {fileID: 567366545082416249}
-  _sensitivityScale: 12
-  _tailLineDivider: 3
 --- !u!114 &1211362193765476430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -639,6 +615,40 @@ MonoBehaviour:
   _destroyingEffect: {fileID: 7485119826907495163, guid: bc39da201042b5e47833da1d5b7ed317, type: 3}
   _maxTouches: 5
   _destroyAfter0: 1
+--- !u!95 &1638237946882178058
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1473785626436904362}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: de50f3cc3ce593047bbc5b04e92bfa53, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3107804247147126558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1473785626436904362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5244b9bbc3d312346bef4127d5d64377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteTransform: {fileID: 5194406654837134528}
 --- !u!1 &7134914765564063876
 GameObject:
   m_ObjectHideFlags: 0

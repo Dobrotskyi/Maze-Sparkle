@@ -394,7 +394,7 @@ public class DragAndShoot : MonoBehaviour
         GameObject shadow = Instantiate(_shadowPrefab, transform.position, Quaternion.identity);
         Rigidbody2D shadowRb = shadow.GetComponent<Rigidbody2D>();
         shadowRb.velocity = (direction.position - transform.position).normalized * shootPower;
-        shadow.GetComponent<DragAndShoot>().IAmShadow();
+        //shadow.GetComponent<DragAndShoot>().IAmShadow();
     }
 
     private void IAmShadow()
