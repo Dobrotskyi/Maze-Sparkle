@@ -29,14 +29,14 @@ public class ShadowShotTrigger : MonoBehaviour
     }
 
     private Rigidbody2D _rb;
-    private DragAndShoot _dragAndShoot;
+    private Ball _dragAndShoot;
 
     private GameObject _objectToHit;
     float _timeToHitObject = 0;
 
     private void Awake()
     {
-        _dragAndShoot = GetComponent<DragAndShoot>();
+        _dragAndShoot = GetComponent<Ball>();
         _rb = GetComponent<Rigidbody2D>();
         SetUpSideTriggers();
     }

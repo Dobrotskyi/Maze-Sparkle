@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -20,7 +19,7 @@ public static class TouchInputs
         return (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended);
     }
 
-    public static bool IsOverUI()
+    public static bool OverUINotClickthrough()
     {
         PointerEventData pointerEventData = new(EventSystem.current);
 
@@ -43,5 +42,20 @@ public static class TouchInputs
         }
 
         return false;
+    }
+
+    public static GameObject GetObjectBehindFinger()
+    {
+        if (OverUINotClickthrough())
+            return null;
+        if (Input.touches.Length == 0)
+            return null;
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.touches[0].position);
+        RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity);
+        if (hit.collider != null)
+            return hit.collider.gameObject;
+
+        else return null;
     }
 }

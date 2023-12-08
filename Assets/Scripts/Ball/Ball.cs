@@ -1,9 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class DragAndShoot : MonoBehaviour
+public class Ball : MonoBehaviour
 {
     [Header("Movement")]
     public float maxPower;
@@ -62,7 +60,7 @@ public class DragAndShoot : MonoBehaviour
 
     void Update()
     {
-        if ((!CanShootShadow && !canShoot) || TouchInputs.IsOverUI())
+        if ((!CanShootShadow && !canShoot) || TouchInputs.OverUINotClickthrough())
         {
             if (screenLine.gameObject.activeSelf)
                 DisableEffects();
@@ -77,10 +75,18 @@ public class DragAndShoot : MonoBehaviour
                 rb.velocity = newVelocity;
         }
 
+        if (Ability.AbilityIsUsed)
+            return;
+
+        _DragAndShoot();
+    }
+
+    private void _DragAndShoot()
+    {
         if (TouchInputs.TouchBegan())
         {
 
-            if (TouchInputs.IsOverUI()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
+            if (TouchInputs.OverUINotClickthrough()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
             if (freeAim)
                 MouseClick();
             else
@@ -88,13 +94,13 @@ public class DragAndShoot : MonoBehaviour
         }
         if (TouchInputs.TouchDragged() && isAiming)
         {
-            if (TouchInputs.IsOverUI()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
+            if (TouchInputs.OverUINotClickthrough()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
             MouseDrag();
         }
 
         if (TouchInputs.TouchReleased() && isAiming)
         {
-            if (TouchInputs.IsOverUI()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
+            if (TouchInputs.OverUINotClickthrough()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
             MouseRelease();
         }
     }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class Ability : MonoBehaviour
 {
-    //public static bool AbilityIsUsed;
+    public static bool AbilityIsUsed { protected set; get; }
 
     public enum Abilities
     {
@@ -13,13 +13,12 @@ public abstract class Ability : MonoBehaviour
     public int Amount => PlayerInfoHolder.AbilityAmount(_abilityType);
     protected abstract Abilities _abilityType { get; }
 
-    public bool TryUseAbility()
+    public void UseAbility()
     {
         //if (Amount == 0)
         //    return false;
 
         StartCoroutine(Use());
-        return true;
     }
 
     protected abstract IEnumerator Use();
