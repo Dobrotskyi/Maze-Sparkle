@@ -17,6 +17,11 @@ public class LevelLoader : MonoBehaviour
         SceneManager.LoadScene("Loading");
     }
 
+    public static void ReloadCurrent()
+    {
+        LoadScene(SceneManager.GetActiveScene().name);
+    }
+
     private void Start()
     {
         StartCoroutine(LoadLevelAsync());

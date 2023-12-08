@@ -1,5 +1,5 @@
+using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -42,6 +42,8 @@ public class DragAndShoot : MonoBehaviour
     [SerializeField] private GameObject _shadowBouncinesField;
     [SerializeField] private int _sensitivityScale = 12;
     [SerializeField] private float _tailLineDivider = 3;
+    [SerializeField] private Transform _spriteTransform;
+    private Animator _animator;
     private bool _shadowWasShot;
 
     void OnEnable()
@@ -54,6 +56,8 @@ public class DragAndShoot : MonoBehaviour
 
         if (_shadowBouncinesField.activeSelf)
             _shadowBouncinesField.SetActive(false);
+
+        _animator = GetComponent<Animator>();
     }
 
     private bool TouchBegan()
@@ -96,17 +100,14 @@ public class DragAndShoot : MonoBehaviour
             MouseRelease();
         }
 
-        if (!canShoot)
+        if (rb.velocity.magnitude < _minVelocity)
         {
-            if (rb.velocity.magnitude < _minVelocity)
-            {
-                float scale = (_minVelocity + 0.1f) / rb.velocity.magnitude;
-                Vector2 newVelocity = rb.velocity * scale;
-                if (float.IsNaN(newVelocity.x) || float.IsNaN(newVelocity.y))
-                    return;
+            float scale = (_minVelocity + 0.1f) / rb.velocity.magnitude;
+            Vector2 newVelocity = rb.velocity * scale;
+            if (float.IsNaN(newVelocity.x) || float.IsNaN(newVelocity.y))
+                return;
 
-                rb.velocity = newVelocity;
-            }
+            rb.velocity = newVelocity;
         }
 
         if (!CanShootShadow && !canShoot)
@@ -172,13 +173,19 @@ public class DragAndShoot : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!canShoot)
-        {
-            if (rb.velocity.magnitude < _minVelocity / 2f)
-            {
-                rb.AddForce(0.1f * ((Vector2)transform.position - collision.contacts[0].point), ForceMode2D.Impulse);
-            }
-        }
+        _spriteTransform.up = (collision.contacts[0].point - (Vector2)_spriteTransform.position).normalized;
+        _animator.SetTrigger("Bounce");
+        StartCoroutine(BounceAfterAnimation());
+    }
+
+    private IEnumerator BounceAfterAnimation()
+    {
+        yield return new WaitForEndOfFrame();
+        Vector2 velocity = rb.velocity;
+        rb.velocity = Vector2.zero;
+
+        yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length * 0.9f);
+        rb.velocity = velocity;
     }
 
     private bool objectClicked()
@@ -394,15 +401,6 @@ public class DragAndShoot : MonoBehaviour
         GameObject shadow = Instantiate(_shadowPrefab, transform.position, Quaternion.identity);
         Rigidbody2D shadowRb = shadow.GetComponent<Rigidbody2D>();
         shadowRb.velocity = (direction.position - transform.position).normalized * shootPower;
-        //shadow.GetComponent<DragAndShoot>().IAmShadow();
-    }
-
-    private void IAmShadow()
-    {
-        _shadowWasShot = true;
-        canShoot = false;
-        screenLine.enabled = false;
-        line.enabled = false;
     }
 
     void DrawScreenLine()
