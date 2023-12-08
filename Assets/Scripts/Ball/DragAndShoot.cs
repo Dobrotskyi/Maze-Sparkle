@@ -60,92 +60,52 @@ public class DragAndShoot : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    private bool TouchBegan()
-    {
-        return (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began);
-    }
-
-    private bool TouchDragged()
-    {
-        return (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved);
-    }
-
-    private bool TouchReleased()
-    {
-        return (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended);
-    }
-
-
     void Update()
     {
-        if (TouchBegan())
+        if ((!CanShootShadow && !canShoot) || TouchInputs.IsOverUI())
         {
+            if (screenLine.gameObject.activeSelf)
+                DisableEffects();
 
-            if (IsOverUI()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
-            if (freeAim)
-                MouseClick();
-            else
-                BallClick();
-        }
-        if (TouchDragged() && isAiming)
-        {
-            if (IsOverUI()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
-            MouseDrag();
-
-        }
-
-        if (TouchReleased() && isAiming)
-        {
-            if (IsOverUI()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
-            MouseRelease();
         }
 
         if (rb.velocity.magnitude < _minVelocity)
         {
             float scale = (_minVelocity + 0.1f) / rb.velocity.magnitude;
             Vector2 newVelocity = rb.velocity * scale;
-            if (float.IsNaN(newVelocity.x) || float.IsNaN(newVelocity.y))
-                return;
-
-            rb.velocity = newVelocity;
+            if (!float.IsNaN(newVelocity.x) || !float.IsNaN(newVelocity.y))
+                rb.velocity = newVelocity;
         }
 
-        if (!CanShootShadow && !canShoot)
+        if (TouchInputs.TouchBegan())
         {
-            if (screenLine.gameObject.activeSelf)
-            {
-                screenLine.enabled = false;
-                line.enabled = false;
-                GameTimeScaler.ResetTimeScale();
-                isAiming = false;
-                _shadowBouncinesField.SetActive(false);
-            }
+
+            if (TouchInputs.IsOverUI()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
+            if (freeAim)
+                MouseClick();
+            else
+                BallClick();
+        }
+        if (TouchInputs.TouchDragged() && isAiming)
+        {
+            if (TouchInputs.IsOverUI()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
+            MouseDrag();
+        }
+
+        if (TouchInputs.TouchReleased() && isAiming)
+        {
+            if (TouchInputs.IsOverUI()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
+            MouseRelease();
         }
     }
 
-    private bool IsOverUI()
+    private void DisableEffects()
     {
-        PointerEventData pointerEventData = new(EventSystem.current);
-
-        foreach (var touch in Input.touches)
-        {
-            pointerEventData.position = touch.position;
-            List<RaycastResult> raycastResultsTouch = new();
-            EventSystem.current.RaycastAll(pointerEventData, raycastResultsTouch);
-            for (int i = 0; i < raycastResultsTouch.Count; i++)
-            {
-                if (raycastResultsTouch[i].gameObject.GetComponent<UIClickThrough>() != null)
-                {
-                    raycastResultsTouch.RemoveAt(i);
-                    i--;
-                }
-            }
-
-            if (raycastResultsTouch.Count > 0)
-                return true;
-        }
-
-        return false;
+        screenLine.enabled = false;
+        line.enabled = false;
+        GameTimeScaler.ResetTimeScale();
+        isAiming = false;
+        _shadowBouncinesField.SetActive(false);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -330,16 +290,6 @@ public class DragAndShoot : MonoBehaviour
     void Aim()
     {
         Vector2 dir = startMousePos - currentMousePos;
-
-        //if (forwardDraging)
-        //{
-        //    transform.right = dir * -1;
-        //}
-        //else
-        //{
-        //    transform.right = dir;
-        //}
-
 
         float dis = Vector2.Distance(currentMousePos, startMousePos);
         dis *= _sensitivityScale;

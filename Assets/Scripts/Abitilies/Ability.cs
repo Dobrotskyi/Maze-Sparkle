@@ -1,7 +1,10 @@
+using System.Collections;
 using UnityEngine;
 
 public abstract class Ability : MonoBehaviour
 {
+    //public static bool AbilityIsUsed;
+
     public enum Abilities
     {
         Finger
@@ -12,12 +15,12 @@ public abstract class Ability : MonoBehaviour
 
     public bool TryUseAbility()
     {
-        if (Amount == 0)
-            return false;
+        //if (Amount == 0)
+        //    return false;
 
-        Use();
+        StartCoroutine(Use());
         return true;
     }
 
-    protected abstract void Use();
+    protected abstract IEnumerator Use();
 }
