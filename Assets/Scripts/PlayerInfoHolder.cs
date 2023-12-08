@@ -37,4 +37,11 @@ public static class PlayerInfoHolder
         Coins -= amt;
         return true;
     }
+
+    public static int AbilityAmount(Ability.Abilities abilityType)
+    {
+        if (PlayerPrefs.HasKey(abilityType.ToString()))
+            PlayerPrefs.SetInt(abilityType.ToString(), 0);
+        return PlayerPrefs.GetInt(abilityType.ToString());
+    }
 }

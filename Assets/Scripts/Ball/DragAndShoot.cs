@@ -78,7 +78,7 @@ public class DragAndShoot : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) || TouchBegan())
+        if (TouchBegan())
         {
 
             if (IsOverUI()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
@@ -87,14 +87,14 @@ public class DragAndShoot : MonoBehaviour
             else
                 BallClick();
         }
-        if ((Input.GetMouseButton(0) || TouchDragged()) && isAiming)
+        if (TouchDragged() && isAiming)
         {
             if (IsOverUI()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
             MouseDrag();
 
         }
 
-        if ((Input.GetMouseButtonUp(0) || TouchReleased()) && isAiming)
+        if (TouchReleased() && isAiming)
         {
             if (IsOverUI()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
             MouseRelease();
@@ -121,12 +121,6 @@ public class DragAndShoot : MonoBehaviour
                 _shadowBouncinesField.SetActive(false);
             }
         }
-
-        //if (rb.velocity.magnitude < 0.7f)
-        //{
-        //    rb.velocity = new Vector2(0, 0); //ENABLE THIS IF YOU WANT THE BALL TO STOP IF ITS MOVING SO SLOW
-        //    canShoot = true;
-        //}
     }
 
     private bool IsOverUI()
@@ -151,23 +145,6 @@ public class DragAndShoot : MonoBehaviour
                 return true;
         }
 
-
-        //MouseInput
-        pointerEventData.position = Input.mousePosition;
-        List<RaycastResult> raycastResults = new();
-        EventSystem.current.RaycastAll(pointerEventData, raycastResults);
-        for (int i = 0; i < raycastResults.Count; i++)
-        {
-            if (raycastResults[i].gameObject.GetComponent<UIClickThrough>() != null)
-            {
-                raycastResults.RemoveAt(i);
-                i--;
-            }
-        }
-        if (raycastResults.Count > 0) return true;
-
-
-
         return false;
     }
 
@@ -190,8 +167,7 @@ public class DragAndShoot : MonoBehaviour
 
     private bool objectClicked()
     {
-        //RaycastHit2D hit = Physics2D.CircleCast(Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position), 0.2f, Vector2.zero);
-        RaycastHit2D hit = Physics2D.CircleCast(Camera.main.ScreenToWorldPoint(Input.mousePosition), 0.2f, Vector2.zero);
+        RaycastHit2D hit = Physics2D.CircleCast(Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position), 0.2f, Vector2.zero);
 
         if (hit.collider != null && hit.collider.gameObject == gameObject)
         {
@@ -207,12 +183,10 @@ public class DragAndShoot : MonoBehaviour
         isAiming = true;
         if (shootWhileMoving)
         {
-            //Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-            Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
             transform.right = dir * 1;
 
-            //startMousePos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-            startMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            startMousePos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
         }
         else
         {
@@ -220,12 +194,10 @@ public class DragAndShoot : MonoBehaviour
             {
                 GameTimeScaler.ChangeTimeScale(_slowMotion);
 
-                //Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-                Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
                 //transform.right = dir * 1;
 
-                //startMousePos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-                startMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                startMousePos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
             }
 
             else
@@ -234,12 +206,10 @@ public class DragAndShoot : MonoBehaviour
                 {
                     GameTimeScaler.ChangeTimeScale(_slowMotion);
 
-                    //Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-                    Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
                     //transform.right = dir * 1;
 
-                    //startMousePos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-                    startMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    startMousePos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 
                     _shadowBouncinesField.SetActive(true);
                 }
@@ -259,8 +229,7 @@ public class DragAndShoot : MonoBehaviour
 
         if (shootWhileMoving)
         {
-            //Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-            Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
             transform.right = dir * 1;
 
             startMousePos = transform.position;
@@ -269,8 +238,7 @@ public class DragAndShoot : MonoBehaviour
         {
             if (canShoot)
             {
-                //Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-                Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
                 transform.right = dir * 1;
 
                 startMousePos = transform.position;
@@ -423,8 +391,7 @@ public class DragAndShoot : MonoBehaviour
 
 
         targetPosition = direction.transform.position;
-        //currentMousePos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-        currentMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        currentMousePos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 
         line.positionCount = 2;
         line.SetPosition(1, targetPosition);
