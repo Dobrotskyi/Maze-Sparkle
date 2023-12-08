@@ -10,6 +10,7 @@ public class ShadowShotTrigger : MonoBehaviour
     [SerializeField] private Vector2 _minMaxClampMagnitude;
     [SerializeField] List<HitTrigger> _collisionTriggers = new(3);
     [SerializeField] private Transform _sideTriggersParent;
+    private Vector2 _minMaxSecondsAfterHit = new(1, 2);
 
     [Serializable]
     public struct HitTrigger
@@ -106,10 +107,10 @@ public class ShadowShotTrigger : MonoBehaviour
 
     private IEnumerator DisableShadowShooting()
     {
-        yield return new WaitForSeconds(Time.time + 0.08f - _timeToHitObject);
+        yield return new WaitForSecondsRealtime(Mathf.Clamp(Time.time + 0.1f - _timeToHitObject, _minMaxSecondsAfterHit.x, _minMaxSecondsAfterHit.y));
+        GameTimeScaler.ResetTimeScale();
         _dragAndShoot.CanShootShadow = false;
         _objectToHit = null;
-        GameTimeScaler.ResetTimeScale();
     }
 
     private void OnDisable()

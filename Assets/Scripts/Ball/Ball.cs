@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Ball : MonoBehaviour
 {
@@ -43,9 +45,12 @@ public class Ball : MonoBehaviour
     [SerializeField] private Transform _spriteTransform;
     private Animator _animator;
     private bool _shadowWasShot;
+    private bool _bouncing;
 
     void OnEnable()
     {
+        GameTimeScaler.ResetTimeScale();
+
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = gravity;
         line = GetComponent<LineRenderer>();
@@ -62,12 +67,11 @@ public class Ball : MonoBehaviour
     {
         if ((!CanShootShadow && !canShoot) || TouchInputs.OverUINotClickthrough())
         {
-            if (screenLine.gameObject.activeSelf)
+            if (screenLine.enabled)
                 DisableEffects();
-
         }
 
-        if (rb.velocity.magnitude < _minVelocity)
+        if (rb.velocity.magnitude < _minVelocity && !_bouncing)
         {
             float scale = (_minVelocity + 0.1f) / rb.velocity.magnitude;
             Vector2 newVelocity = rb.velocity * scale;
@@ -75,7 +79,7 @@ public class Ball : MonoBehaviour
                 rb.velocity = newVelocity;
         }
 
-        if (Ability.AbilityIsUsed)
+        if (Ability.AbilityInUse)
             return;
 
         _DragAndShoot();
@@ -85,7 +89,6 @@ public class Ball : MonoBehaviour
     {
         if (TouchInputs.TouchBegan())
         {
-
             if (TouchInputs.OverUINotClickthrough()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
             if (freeAim)
                 MouseClick();
@@ -94,9 +97,7 @@ public class Ball : MonoBehaviour
         }
         if (isAiming)
         {
-            Aim();
-            DrawLine();
-            if (TouchInputs.TouchDragged())
+            if (Input.touches.Length > 0)
             {
                 if (TouchInputs.OverUINotClickthrough()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
                 MouseDrag();
@@ -114,7 +115,6 @@ public class Ball : MonoBehaviour
     {
         screenLine.enabled = false;
         line.enabled = false;
-        GameTimeScaler.ResetTimeScale();
         isAiming = false;
         _shadowBouncinesField.SetActive(false);
     }
@@ -123,6 +123,7 @@ public class Ball : MonoBehaviour
     {
         _spriteTransform.up = (collision.contacts[0].point - (Vector2)_spriteTransform.position).normalized;
         _animator.SetTrigger("Bounce");
+        _bouncing = true;
         StartCoroutine(BounceAfterAnimation());
     }
 
@@ -131,6 +132,7 @@ public class Ball : MonoBehaviour
         yield return new WaitForEndOfFrame();
         Vector2 velocity = rb.velocity;
         rb.velocity = Vector2.zero;
+        _bouncing = false;
 
         yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length * 0.9f);
         rb.velocity = velocity;
@@ -270,6 +272,8 @@ public class Ball : MonoBehaviour
             Shoot();
             screenLine.enabled = false;
             line.enabled = false;
+            GameTimeScaler.ResetTimeScale();
+            isAiming = false;
         }
         else
         {
@@ -278,6 +282,8 @@ public class Ball : MonoBehaviour
                 Shoot();
                 screenLine.enabled = false;
                 line.enabled = false;
+                GameTimeScaler.ResetTimeScale();
+                isAiming = false;
             }
             else
             {
@@ -287,13 +293,11 @@ public class Ball : MonoBehaviour
                     screenLine.enabled = false;
                     line.enabled = false;
                     _shadowBouncinesField.SetActive(false);
+                    GameTimeScaler.ResetTimeScale();
+                    isAiming = false;
                 }
             }
         }
-
-        isAiming = false;
-
-        GameTimeScaler.ResetTimeScale();
     }
 
 

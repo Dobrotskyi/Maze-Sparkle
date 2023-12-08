@@ -175,6 +175,7 @@ GameObject:
   - component: {fileID: 5598311972079454229}
   - component: {fileID: 6812262820972055183}
   - component: {fileID: 2075670296658050255}
+  - component: {fileID: 8795778605095986435}
   m_Layer: 6
   m_Name: ShadowBouncinesAmt
   m_TagString: Untagged
@@ -298,6 +299,18 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8795778605095986435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2793827284497056325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7ac61e8481288e448e6727c744e7833, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4087428805541712153
 GameObject:
   m_ObjectHideFlags: 0
@@ -310,6 +323,7 @@ GameObject:
   - component: {fileID: 5555681095794013606}
   - component: {fileID: 4566302134809434954}
   - component: {fileID: 3062981097518198631}
+  - component: {fileID: 1884267948427969844}
   m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
@@ -400,6 +414,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &1884267948427969844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4087428805541712153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7ac61e8481288e448e6727c744e7833, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4483001976557470282
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2075284649761339614, guid: 54648ada08b08974b92b307d10ca3a08, type: 3}
+      propertyPath: _onDestroyEffect
+      value: 
+      objectReference: {fileID: 7180918455190229001, guid: ae1f853eebe6567469be361c9024a882, type: 3}
     - target: {fileID: 4145791832212226115, guid: 54648ada08b08974b92b307d10ca3a08, type: 3}
       propertyPath: m_Name
       value: MovingWall Variant

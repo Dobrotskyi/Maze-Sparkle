@@ -1,24 +1,20 @@
 using System.Collections;
 using UnityEngine;
 
-public class AbilityFinger : Ability
+public class AbilityFinger : Ability, IInteractableAbility
 {
-    public static bool InUse { private set; get; }
-
+    //public static bool InUse { private set; get; }
     protected override Abilities _abilityType => Abilities.Finger;
 
     protected override IEnumerator Use()
     {
-        if (AbilityIsUsed)
-            yield break;
-
-        InUse = true;
-        AbilityIsUsed = true;
-        Dragable selectedObject = null;
+        //InUse = true;
+        AbilityInUse = true;
+        Interactable selectedObject = null;
         Vector2 startObjectPosition = Vector2.zero;
-        LaunchStarted();
+        InvokeStarted();
 
-        while (InUse)
+        while (AbilityInUse)
         {
             if (TouchInputs.OverUINotClickthrough())
             {
@@ -33,11 +29,11 @@ public class AbilityFinger : Ability
 
             if (TouchInputs.TouchBegan() && selectedObject == null)
             {
-                selectedObject = TouchInputs.GetObjectBehindFinger()?.GetComponent<Dragable>();
+                selectedObject = TouchInputs.GetObjectBehindFinger()?.GetComponent<Interactable>();
                 if (selectedObject != null)
                 {
                     startObjectPosition = selectedObject.transform.position;
-                    LaunchStarted();
+                    InvokeStarted();
                 }
             }
 
@@ -48,11 +44,11 @@ public class AbilityFinger : Ability
 
             if (TouchInputs.TouchReleased())
             {
-                InUse = false;
-                AbilityIsUsed = false;
+                //InUse = false;
+                AbilityInUse = false;
                 selectedObject.PositionSet();
                 selectedObject = null;
-                LaunchFinished();
+                InvokeFinished();
             }
 
         End:

@@ -1,9 +1,12 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
-public class Dragable : MonoBehaviour
+public class Interactable : MonoBehaviour
 {
+    [SerializeField] private ParticleSystem _onDestroyEffect;
     private Rigidbody2D _rb;
     private Animator _animator;
 
@@ -21,6 +24,12 @@ public class Dragable : MonoBehaviour
         _rb.MovePosition((Vector2)transform.position + direction * Time.deltaTime * 200f);
     }
 
+    public void DestroySelf()
+    {
+        Instantiate(_onDestroyEffect, transform.position, Quaternion.identity);
+        Destroy(gameObject);
+    }
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -29,21 +38,21 @@ public class Dragable : MonoBehaviour
 
     private void OnEnable()
     {
-        AbilityFinger ability = FindObjectOfType<AbilityFinger>();
-        if (ability != null)
+        List<IInteractableAbility> abilities = FindObjectsOfType<MonoBehaviour>().OfType<IInteractableAbility>().ToList();
+        foreach (var ability in abilities)
         {
-            FindObjectOfType<AbilityFinger>().Started += StartInteractableAnim;
-            FindObjectOfType<AbilityFinger>().Finished += StopInteractableAnim;
+            ability.Started += StartInteractableAnim;
+            ability.Finished += StopInteractableAnim;
         }
     }
 
     private void OnDisable()
     {
-        AbilityFinger ability = FindObjectOfType<AbilityFinger>();
-        if (ability != null)
+        List<IInteractableAbility> abilities = FindObjectsOfType<MonoBehaviour>().OfType<IInteractableAbility>().ToList();
+        foreach (var ability in abilities)
         {
-            FindObjectOfType<AbilityFinger>().Started -= StartInteractableAnim;
-            FindObjectOfType<AbilityFinger>().Finished -= StopInteractableAnim;
+            ability.Started -= StartInteractableAnim;
+            ability.Finished -= StopInteractableAnim;
         }
     }
 
