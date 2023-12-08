@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -5,6 +6,8 @@ using UnityEngine;
 public abstract class Ability : MonoBehaviour
 {
     public static bool AbilityIsUsed { protected set; get; }
+    public event Action Started;
+    public event Action Finished;
 
     public int Amount => PlayerInfoHolder.AbilityAmount(_abilityType);
     public enum Abilities
@@ -21,6 +24,16 @@ public abstract class Ability : MonoBehaviour
         //    return false;
 
         StartCoroutine(Use());
+    }
+
+    protected void LaunchStarted()
+    {
+        Started?.Invoke();
+    }
+
+    protected void LaunchFinished()
+    {
+        Finished?.Invoke();
     }
 
     private void OnEnable()

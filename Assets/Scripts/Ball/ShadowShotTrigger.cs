@@ -73,8 +73,8 @@ public class ShadowShotTrigger : MonoBehaviour
                 StopAllCoroutines();
                 _dragAndShoot.CanShootShadow = true;
                 float slowMotion = Mathf.Clamp(_dragAndShoot.SlowMotion - 0.05f * magnitudeScale, 0.1f, _dragAndShoot.SlowMotion);
-                GameTimeScaler.ChangeTimeScale(slowMotion);
                 _timeToHitObject = Time.time;
+                GameTimeScaler.ChangeTimeScale(slowMotion);
             }
         }
     }
@@ -106,7 +106,7 @@ public class ShadowShotTrigger : MonoBehaviour
 
     private IEnumerator DisableShadowShooting()
     {
-        yield return new WaitForSeconds(Time.time - _timeToHitObject);
+        yield return new WaitForSeconds(Time.time + 0.08f - _timeToHitObject);
         _dragAndShoot.CanShootShadow = false;
         _objectToHit = null;
         GameTimeScaler.ResetTimeScale();

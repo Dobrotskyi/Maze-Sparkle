@@ -1,9 +1,11 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Animator))]
 public class Dragable : MonoBehaviour
 {
     private Rigidbody2D _rb;
+    private Animator _animator;
 
     public void PositionSet()
     {
@@ -22,5 +24,29 @@ public class Dragable : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
     }
+
+    private void OnEnable()
+    {
+        AbilityFinger ability = FindObjectOfType<AbilityFinger>();
+        if (ability != null)
+        {
+            FindObjectOfType<AbilityFinger>().Started += StartInteractableAnim;
+            FindObjectOfType<AbilityFinger>().Finished += StopInteractableAnim;
+        }
+    }
+
+    private void OnDisable()
+    {
+        AbilityFinger ability = FindObjectOfType<AbilityFinger>();
+        if (ability != null)
+        {
+            FindObjectOfType<AbilityFinger>().Started -= StartInteractableAnim;
+            FindObjectOfType<AbilityFinger>().Finished -= StopInteractableAnim;
+        }
+    }
+
+    private void StartInteractableAnim() => _animator.SetBool("Interacting", true);
+    private void StopInteractableAnim() => _animator.SetBool("Interacting", false);
 }

@@ -16,6 +16,7 @@ public class AbilityFinger : Ability
         AbilityIsUsed = true;
         Dragable selectedObject = null;
         Vector2 startObjectPosition = Vector2.zero;
+        LaunchStarted();
 
         while (InUse)
         {
@@ -34,7 +35,10 @@ public class AbilityFinger : Ability
             {
                 selectedObject = TouchInputs.GetObjectBehindFinger()?.GetComponent<Dragable>();
                 if (selectedObject != null)
+                {
                     startObjectPosition = selectedObject.transform.position;
+                    LaunchStarted();
+                }
             }
 
             if (selectedObject == null)
@@ -48,12 +52,11 @@ public class AbilityFinger : Ability
                 AbilityIsUsed = false;
                 selectedObject.PositionSet();
                 selectedObject = null;
+                LaunchFinished();
             }
 
         End:
             yield return new WaitForEndOfFrame();
         }
-
     }
-
 }

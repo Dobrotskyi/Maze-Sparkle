@@ -92,10 +92,15 @@ public class Ball : MonoBehaviour
             else
                 BallClick();
         }
-        if (TouchInputs.TouchDragged() && isAiming)
+        if (isAiming)
         {
-            if (TouchInputs.OverUINotClickthrough()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
-            MouseDrag();
+            Aim();
+            DrawLine();
+            if (TouchInputs.TouchDragged())
+            {
+                if (TouchInputs.OverUINotClickthrough()) return;  //ENABLE THIS IF YOU DONT WANT TO IGNORE UI
+                MouseDrag();
+            }
         }
 
         if (TouchInputs.TouchReleased() && isAiming)
@@ -219,8 +224,8 @@ public class Ball : MonoBehaviour
 
         if (shootWhileMoving)
         {
-            Aim();
-            DrawLine();
+            //Aim();
+            //DrawLine();
 
             if (showLineOnScreen)
                 DrawScreenLine();
