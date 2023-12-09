@@ -7,7 +7,6 @@ public class AbilityHammer : Ability, IInteractableAbility
 
     protected override IEnumerator Use()
     {
-        AbilityInUse = true;
         InvokeStarted();
         Interactable selectedObject = null;
         while (AbilityInUse)
@@ -19,7 +18,6 @@ public class AbilityHammer : Ability, IInteractableAbility
             {
                 selectedObject.DestroySelf();
                 InvokeFinished();
-                AbilityInUse = false;
             }
 
             yield return new WaitForEndOfFrame();

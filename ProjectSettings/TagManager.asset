@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Shadow
   - Ball
+  - AllowSpawn
   layers:
   - Default
   - TransparentFX

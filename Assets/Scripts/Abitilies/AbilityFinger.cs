@@ -3,13 +3,10 @@ using UnityEngine;
 
 public class AbilityFinger : Ability, IInteractableAbility
 {
-    //public static bool InUse { private set; get; }
     protected override Abilities _abilityType => Abilities.Finger;
 
     protected override IEnumerator Use()
     {
-        //InUse = true;
-        AbilityInUse = true;
         Interactable selectedObject = null;
         Vector2 startObjectPosition = Vector2.zero;
         InvokeStarted();
@@ -44,8 +41,6 @@ public class AbilityFinger : Ability, IInteractableAbility
 
             if (TouchInputs.TouchReleased())
             {
-                //InUse = false;
-                AbilityInUse = false;
                 selectedObject.PositionSet();
                 selectedObject = null;
                 InvokeFinished();

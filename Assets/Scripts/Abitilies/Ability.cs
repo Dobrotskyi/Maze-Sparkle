@@ -15,7 +15,8 @@ public abstract class Ability : MonoBehaviour
     public enum Abilities
     {
         Finger,
-        Hammer
+        Hammer,
+        Teleportation
     }
     protected abstract Abilities _abilityType { get; }
     [SerializeField] private TextMeshProUGUI _amountField;
@@ -26,8 +27,8 @@ public abstract class Ability : MonoBehaviour
     protected abstract IEnumerator Use();
     public void UseAbility()
     {
-        if (Amount == 0)
-            return;
+        //if (Amount == 0)
+        //    return;
         if (!AbilityInUse)
             StartCoroutine(Use());
     }
@@ -38,26 +39,28 @@ public abstract class Ability : MonoBehaviour
             _amountField.text = Amount.ToString();
     }
 
-    protected void AbilityUsed()
-    {
-        PlayerInfoHolder.AbilityUsed(_abilityType);
-        _amountField.text = Amount.ToString();
-        if (Amount == 0)
-            _button.interactable = false;
-    }
-
     protected void InvokeStarted()
     {
+        AbilityInUse = true;
         Started?.Invoke();
     }
 
     protected void InvokeFinished()
     {
+        AbilityInUse = false;
         Finished?.Invoke();
         AbilityUsed();
     }
 
-    private void Awake()
+    protected void AbilityUsed()
+    {
+        //PlayerInfoHolder.AbilityUsed(_abilityType);
+        _amountField.text = Amount.ToString();
+        //if (Amount == 0)
+        //    _button.interactable = false;
+    }
+
+    protected virtual void Awake()
     {
         _button = transform.GetComponentInChildren<Button>();
     }
@@ -68,7 +71,7 @@ public abstract class Ability : MonoBehaviour
         if (_priceField != null)
             _priceField.text = Price.ToString();
 
-        if (Amount == 0)
-            _button.interactable = false;
+        //if (Amount == 0 && _priceField == null)
+        //    _button.interactable = false;
     }
 }
