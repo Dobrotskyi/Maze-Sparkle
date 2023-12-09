@@ -34,7 +34,16 @@ public class Ball : MonoBehaviour
     float shootPower;
     bool canShoot = true;
 
-    public bool CanShootShadow;
+    public bool CanShootShadow
+    {
+        get { return _canShootShadow; }
+        set
+        {
+            _canShootShadow = value;
+            _animator.SetBool("InteractionSpedUp", _canShootShadow);
+        }
+    }
+    private bool _canShootShadow;
     public float SlowMotion => _slowMotion;
     [SerializeField] private float _minVelocity = 0.5f;
     [SerializeField] private GameObject _shadowPrefab;
@@ -122,7 +131,6 @@ public class Ball : MonoBehaviour
     {
         _spriteTransform.up = (collision.contacts[0].point - (Vector2)_spriteTransform.position).normalized;
         _animator.SetTrigger("Bounce");
-        _bouncing = true;
         StartCoroutine(BounceAfterAnimation());
     }
 
@@ -131,10 +139,10 @@ public class Ball : MonoBehaviour
         yield return new WaitForEndOfFrame();
         Vector2 velocity = rb.velocity;
         rb.velocity = Vector2.zero;
-        _bouncing = false;
-
+        _bouncing = true;
         yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length * 0.9f);
         rb.velocity = velocity;
+        _bouncing = false;
     }
 
     private bool objectClicked()
