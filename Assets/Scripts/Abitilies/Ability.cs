@@ -55,6 +55,7 @@ public abstract class Ability : MonoBehaviour
 
     protected void InvokeCanceled()
     {
+        StopAllCoroutines();
         AbilityInUse = false;
         Finished?.Invoke();
     }
@@ -78,6 +79,12 @@ public abstract class Ability : MonoBehaviour
     {
         _button = transform.GetComponentInChildren<Button>();
         InvokeCanceled();
+        CancelUsageButton.AbilityCanceled += InvokeCanceled;
+    }
+
+    private void OnDestroy()
+    {
+        CancelUsageButton.AbilityCanceled -= InvokeCanceled;
     }
 
     private void OnEnable()
