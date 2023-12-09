@@ -8,9 +8,21 @@ public class InteractionAnimationPlayer : MonoBehaviour
     private void OnEnable()
     {
         _animator = GetComponent<Animator>();
-        _ability = FindObjectOfType<TeleportationAbility>();
-        _ability.Started += StartInteractionAnim;
-        _ability.Finished += StopInteractionAnim;
+        _ability = FindObjectOfType<TeleportationAbility>(true);
+        if (_ability != null)
+        {
+            _ability.Started += StartInteractionAnim;
+            _ability.Finished += StopInteractionAnim;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (_ability != null)
+        {
+            _ability.Started -= StartInteractionAnim;
+            _ability.Finished -= StopInteractionAnim;
+        }
     }
 
     private void StartInteractionAnim()

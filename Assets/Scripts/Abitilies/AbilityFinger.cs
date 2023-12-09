@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class AbilityFinger : Ability, IInteractableAbility
 {
+    public override string Description => "Gives the ability to change the position of an obstacle";
+    public override string Name => "Finger";
     protected override Abilities _abilityType => Abilities.Finger;
 
     protected override IEnumerator Use()

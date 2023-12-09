@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class TeleportationAbility : Ability
 {
+    public override string Description => "Gives the ability to make a shot from a different position";
+    public override string Name => "Teleportation";
+
     [SerializeField] private ParticleSystem _effect;
     protected override Abilities _abilityType => Abilities.Teleportation;
     private Ball _playerBall;

@@ -38,7 +38,7 @@ public class Interactable : MonoBehaviour
 
     private void OnEnable()
     {
-        List<IInteractableAbility> abilities = FindObjectsOfType<MonoBehaviour>().OfType<IInteractableAbility>().ToList();
+        List<IInteractableAbility> abilities = FindObjectsOfType<MonoBehaviour>(true).OfType<IInteractableAbility>().ToList();
         foreach (var ability in abilities)
         {
             ability.Started += StartInteractableAnim;
@@ -48,7 +48,7 @@ public class Interactable : MonoBehaviour
 
     private void OnDisable()
     {
-        List<IInteractableAbility> abilities = FindObjectsOfType<MonoBehaviour>().OfType<IInteractableAbility>().ToList();
+        List<IInteractableAbility> abilities = FindObjectsOfType<MonoBehaviour>(true).OfType<IInteractableAbility>().ToList();
         foreach (var ability in abilities)
         {
             ability.Started -= StartInteractableAnim;

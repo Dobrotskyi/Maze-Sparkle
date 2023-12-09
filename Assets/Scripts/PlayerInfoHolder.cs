@@ -10,7 +10,8 @@ public static class PlayerInfoHolder
     public static Dictionary<Ability.Abilities, int> PriceList = new() {
         { Ability.Abilities.Finger, 240 },
         {Ability.Abilities.Hammer, 300 },
-        {Ability.Abilities.Teleportation, 350 }
+        {Ability.Abilities.Teleportation, 350 },
+        {Ability.Abilities.ShootAgain, 400 }
     };
 
     public static int GetAbilityPrice(Ability.Abilities ability) => PriceList[ability];

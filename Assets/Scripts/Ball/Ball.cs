@@ -32,7 +32,7 @@ public class Ball : MonoBehaviour
     Vector2 currentMousePos;
 
     float shootPower;
-    bool canShoot = true;
+    public bool CanShoot { private set; get; } = true;
 
     public bool CanShootShadow
     {
@@ -55,6 +55,16 @@ public class Ball : MonoBehaviour
     private bool _shadowWasShot;
     private bool _bouncing;
 
+    public void ShootAgain()
+    {
+        CanShoot = true;
+        StopAllCoroutines();
+        rb.velocity = Vector2.zero;
+        GameTimeScaler.ResetTimeScale();
+        _animator.SetBool("Interaction", false);
+        _animator.SetBool("InteractionSpedUp", false);
+    }
+
     void OnEnable()
     {
         GameTimeScaler.ResetTimeScale();
@@ -73,7 +83,7 @@ public class Ball : MonoBehaviour
 
     void Update()
     {
-        if ((!CanShootShadow && !canShoot) || TouchInputs.OverUINotClickthrough())
+        if ((!CanShootShadow && !CanShoot) || TouchInputs.OverUINotClickthrough())
         {
             if (screenLine.enabled)
                 DisableEffects();
@@ -170,7 +180,7 @@ public class Ball : MonoBehaviour
         }
         else
         {
-            if (canShoot)
+            if (CanShoot)
             {
                 GameTimeScaler.ChangeTimeScale(_slowMotion);
 
@@ -216,7 +226,7 @@ public class Ball : MonoBehaviour
         }
         else
         {
-            if (canShoot)
+            if (CanShoot)
             {
                 Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
                 transform.right = dir * 1;
@@ -251,7 +261,7 @@ public class Ball : MonoBehaviour
         }
         else
         {
-            if (canShoot || (!_shadowWasShot && CanShootShadow))
+            if (CanShoot || (!_shadowWasShot && CanShootShadow))
             {
                 Aim();
                 DrawLine();
@@ -284,7 +294,7 @@ public class Ball : MonoBehaviour
         }
         else
         {
-            if (canShoot /*&& !EventSystem.current.IsPointerOverGameObject()*/)
+            if (CanShoot /*&& !EventSystem.current.IsPointerOverGameObject()*/)
             {
                 Shoot();
                 screenLine.enabled = false;
@@ -331,7 +341,7 @@ public class Ball : MonoBehaviour
     }
     private void Shoot()
     {
-        canShoot = false;
+        CanShoot = false;
         rb.velocity = (direction.position - transform.position).normalized * shootPower;
     }
 

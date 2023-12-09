@@ -12,11 +12,14 @@ public abstract class Ability : MonoBehaviour
 
     public int Price => PlayerInfoHolder.GetAbilityPrice(_abilityType);
     public int Amount => PlayerInfoHolder.AbilityAmount(_abilityType);
+    public abstract string Description { get; }
+    public abstract string Name { get; }
     public enum Abilities
     {
         Finger,
         Hammer,
-        Teleportation
+        Teleportation,
+        ShootAgain
     }
     protected abstract Abilities _abilityType { get; }
     [SerializeField] private TextMeshProUGUI _amountField;
@@ -30,7 +33,12 @@ public abstract class Ability : MonoBehaviour
         //if (Amount == 0)
         //    return;
         if (!AbilityInUse)
-            StartCoroutine(Use());
+            FindObjectOfType<AbilityUseDummy>().StartCoroutine(Use());
+    }
+
+    public void ShowInfo()
+    {
+        FindObjectOfType<SkillInfoPopUp>().ShowSkillInfo(Name, Description);
     }
 
     public void PurchaseAbility()
@@ -43,6 +51,12 @@ public abstract class Ability : MonoBehaviour
     {
         AbilityInUse = true;
         Started?.Invoke();
+    }
+
+    protected void InvokeCanceled()
+    {
+        AbilityInUse = false;
+        Finished?.Invoke();
     }
 
     protected void InvokeFinished()
@@ -63,6 +77,7 @@ public abstract class Ability : MonoBehaviour
     protected virtual void Awake()
     {
         _button = transform.GetComponentInChildren<Button>();
+        InvokeCanceled();
     }
 
     private void OnEnable()
