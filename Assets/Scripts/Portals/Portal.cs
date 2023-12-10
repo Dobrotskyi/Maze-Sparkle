@@ -15,7 +15,7 @@ public class Portal : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Ball"))
+        if (collision.GetComponent<Ball>() != null || collision.gameObject.CompareTag("ShadowBall"))
         {
             _connectedPortal.Teleport(collision.transform);
         }
@@ -26,7 +26,9 @@ public class Portal : MonoBehaviour
         StartCoroutine(BlockPortalForTime(5f));
         objectTransform.position = transform.position;
         Rigidbody2D rb = objectTransform.GetComponent<Rigidbody2D>();
-        rb.velocity *= transform.right;
+        float velocity = rb.velocity.normalized.magnitude;
+        rb.velocity = Vector3.zero;
+        rb.AddForce(_statusOn.transform.up * velocity, ForceMode2D.Impulse);
     }
 
     private IEnumerator BlockPortalForTime(float timeInSeconds)
@@ -40,7 +42,6 @@ public class Portal : MonoBehaviour
 
     private void ToggleStatus()
     {
-        Debug.Log("ToggleStatus");
         _statusOff.SetActive(!_statusOff.activeSelf);
         _statusOn.SetActive(!_statusOn.activeSelf);
     }

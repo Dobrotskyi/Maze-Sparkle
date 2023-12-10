@@ -89,6 +89,7 @@ public abstract class Ability : MonoBehaviour
 
     protected virtual void OnEnable()
     {
+        _button.interactable = true;
         _amountField.text = Amount.ToString();
         if (_priceField != null)
             _priceField.text = Price.ToString();

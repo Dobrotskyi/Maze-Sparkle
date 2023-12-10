@@ -43,7 +43,6 @@ public class TeleportationAbility : Ability
 
         if (_playerBall != null && !_playerBall.CanShoot)
             _button.interactable = false;
-        else _button.interactable = true;
     }
 
     private bool CanTeleportInPoint(Vector2 point)

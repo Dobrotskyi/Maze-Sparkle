@@ -97,6 +97,10 @@ public class Ball : MonoBehaviour
                 rb.velocity = newVelocity;
         }
 
+        if (CanShoot)
+            if (rb.velocity != Vector2.zero)
+                rb.velocity = Vector2.zero;
+
         if (Ability.AbilityInUse)
             return;
 
@@ -141,6 +145,7 @@ public class Ball : MonoBehaviour
     {
         _spriteTransform.up = (collision.contacts[0].point - (Vector2)_spriteTransform.position).normalized;
         _animator.SetTrigger("Bounce");
+        StopAllCoroutines();
         StartCoroutine(BounceAfterAnimation());
     }
 

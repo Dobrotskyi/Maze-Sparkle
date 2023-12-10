@@ -235,7 +235,7 @@ GameObject:
   - component: {fileID: 1638237946882178058}
   m_Layer: 6
   m_Name: ShadowBall
-  m_TagString: Ball
+  m_TagString: ShadowBall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

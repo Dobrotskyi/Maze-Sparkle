@@ -21,7 +21,8 @@ public class ShotAgainAbility : Ability
         base.OnEnable();
         Ball player = FindObjectOfType<Ball>();
         if (player != null && player.CanShoot)
+        {
             _button.interactable = false;
-        else _button.interactable = true;
+        }
     }
 }

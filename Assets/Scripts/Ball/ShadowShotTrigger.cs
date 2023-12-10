@@ -105,6 +105,14 @@ public class ShadowShotTrigger : MonoBehaviour
         }
     }
 
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (gameObject.activeSelf && _objectToHit != null)
+        {
+            StartCoroutine(DisableShadowShooting());
+        }
+    }
+
     private IEnumerator DisableShadowShooting()
     {
         yield return new WaitForSecondsRealtime(Mathf.Clamp(Time.time + 0.1f - _timeToHitObject, _minMaxSecondsAfterHit.x, _minMaxSecondsAfterHit.y));
