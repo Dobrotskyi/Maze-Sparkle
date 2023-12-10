@@ -80,6 +80,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4145791832212226115, guid: 54648ada08b08974b92b307d10ca3a08, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5723131937929371003}
+    - targetCorrespondingSourceObject: {fileID: 4145791832212226115, guid: 54648ada08b08974b92b307d10ca3a08, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9095490934865715094}
   m_SourcePrefab: {fileID: 100100000, guid: 54648ada08b08974b92b307d10ca3a08, type: 3}
 --- !u!1 &326284584141262957 stripped
 GameObject:
@@ -101,3 +104,17 @@ MonoBehaviour:
   _firstPoint: {x: 0, y: 0, z: 0}
   _secondPoint: {x: 0, y: 0, z: 0}
   _speed: 0.5
+--- !u!114 &9095490934865715094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 326284584141262957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51dd62ef73f3e943a59ce4832d4b370, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onDestroyEffect: {fileID: 7180918455190229001, guid: ae1f853eebe6567469be361c9024a882, type: 3}
+  _enableDragging: 0

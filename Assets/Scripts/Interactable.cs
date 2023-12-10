@@ -7,6 +7,7 @@ using UnityEngine;
 public class Interactable : MonoBehaviour
 {
     [SerializeField] private ParticleSystem _onDestroyEffect;
+    [SerializeField] private bool _enableDragging = true;
     private Rigidbody2D _rb;
     private Animator _animator;
     private bool _triggerParam;
@@ -52,6 +53,8 @@ public class Interactable : MonoBehaviour
         List<IInteractableAbility> abilities = FindObjectsOfType<MonoBehaviour>(true).OfType<IInteractableAbility>().ToList();
         foreach (var ability in abilities)
         {
+            if (ability is AbilityFinger && !_enableDragging)
+                continue;
             ability.Started += StartInteractableAnim;
             ability.Finished += StopInteractableAnim;
         }
@@ -62,6 +65,8 @@ public class Interactable : MonoBehaviour
         List<IInteractableAbility> abilities = FindObjectsOfType<MonoBehaviour>(true).OfType<IInteractableAbility>().ToList();
         foreach (var ability in abilities)
         {
+            if (ability is AbilityFinger && !_enableDragging)
+                continue;
             ability.Started -= StartInteractableAnim;
             ability.Finished -= StopInteractableAnim;
         }

@@ -11,7 +11,7 @@ public class LoadSceneClick : MonoBehaviour
     public void LoadNextLevel()
     {
         int buildIndex = SceneManager.GetActiveScene().buildIndex;
-        if (buildIndex == SceneManager.sceneCount - 1)
+        if (buildIndex == SceneManager.sceneCountInBuildSettings - 1)
             LevelLoader.LoadScene("MainMenu");
         else
             LevelLoader.LoadScene("Level_" + (buildIndex).ToString());

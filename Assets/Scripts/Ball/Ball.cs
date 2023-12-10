@@ -278,7 +278,8 @@ public class Ball : MonoBehaviour
                 if (distance > 0.1f)
                 {
                     line.enabled = true;
-
+                    if (CanShootShadow)
+                        _shadowBouncinesField.SetActive(true);
                     if (showLineOnScreen)
                         screenLine.enabled = true;
                 }
