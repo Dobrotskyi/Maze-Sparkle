@@ -20,5 +20,6 @@ public class LevelFinishedPopUp : MonoBehaviour
     {
         _body.SetActive(true);
         _coinsRewardField.text = "+" + PlayerInfoHolder.REWARD;
+        PlayerInfoHolder.AddCoins(PlayerInfoHolder.REWARD);
     }
 }

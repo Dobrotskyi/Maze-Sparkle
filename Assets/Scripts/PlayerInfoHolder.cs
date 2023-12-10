@@ -57,8 +57,10 @@ public static class PlayerInfoHolder
 
     public static bool TryPurchaseAbility(Ability.Abilities abilityType)
     {
-        //If enough coins
+        if (Coins <= PriceList[abilityType])
+            return false;
         PlayerPrefs.SetInt(abilityType.ToString(), AbilityAmount(abilityType) + 1);
+        PlayerPrefs.SetInt(COINS_KEY, Coins -= PriceList[abilityType]);
         return true;
     }
 

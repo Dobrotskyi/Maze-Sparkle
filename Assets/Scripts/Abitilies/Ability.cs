@@ -87,12 +87,16 @@ public abstract class Ability : MonoBehaviour
         _dummy = FindObjectOfType<AbilityUseDummy>();
         CancelUsageButton.AbilityCanceled += InvokeCanceled;
         EndLevelPortal.LevelFinished += InvokeCanceled;
+        if (_priceField != null)
+            PlayerInfoHolder.CoinsAmtUpdated += CheckIfCanBuy;
     }
 
     private void OnDestroy()
     {
         CancelUsageButton.AbilityCanceled -= InvokeCanceled;
         EndLevelPortal.LevelFinished -= InvokeCanceled;
+        if (_priceField != null)
+            PlayerInfoHolder.CoinsAmtUpdated -= CheckIfCanBuy;
     }
 
     protected virtual void OnEnable()
@@ -100,9 +104,21 @@ public abstract class Ability : MonoBehaviour
         _button.interactable = true;
         _amountField.text = Amount.ToString();
         if (_priceField != null)
+        {
             _priceField.text = Price.ToString();
+            if (PlayerInfoHolder.Coins < Price)
+                _button.interactable = false;
+        }
 
         if (Amount == 0 && _priceField == null)
             _button.interactable = false;
+    }
+
+    private void CheckIfCanBuy()
+    {
+        if (PlayerInfoHolder.Coins < Price)
+            _button.interactable = false;
+        else
+            _button.interactable = true;
     }
 }
