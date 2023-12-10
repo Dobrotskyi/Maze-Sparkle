@@ -25,13 +25,13 @@ public abstract class Ability : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _amountField;
     [Header("Only in shop")]
     [SerializeField] private TextMeshProUGUI _priceField;
-    private Button _button;
+    protected Button _button;
 
     protected abstract IEnumerator Use();
     public void UseAbility()
     {
-        //if (Amount == 0)
-        //    return;
+        if (Amount == 0)
+            return;
         if (!AbilityInUse)
             FindObjectOfType<AbilityUseDummy>().StartCoroutine(Use());
     }
@@ -69,10 +69,10 @@ public abstract class Ability : MonoBehaviour
 
     protected void AbilityUsed()
     {
-        //PlayerInfoHolder.AbilityUsed(_abilityType);
+        PlayerInfoHolder.AbilityUsed(_abilityType);
         _amountField.text = Amount.ToString();
-        //if (Amount == 0)
-        //    _button.interactable = false;
+        if (Amount == 0)
+            _button.interactable = false;
     }
 
     protected virtual void Awake()
@@ -87,13 +87,13 @@ public abstract class Ability : MonoBehaviour
         CancelUsageButton.AbilityCanceled -= InvokeCanceled;
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         _amountField.text = Amount.ToString();
         if (_priceField != null)
             _priceField.text = Price.ToString();
 
-        //if (Amount == 0 && _priceField == null)
-        //    _button.interactable = false;
+        if (Amount == 0 && _priceField == null)
+            _button.interactable = false;
     }
 }

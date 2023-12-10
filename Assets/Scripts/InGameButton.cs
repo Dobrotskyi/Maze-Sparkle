@@ -15,14 +15,24 @@ public class InGameButton : MonoBehaviour
             door.AddToOpenButtons();
     }
 
+    private void OnDisable()
+    {
+        OpenConnectedDoors();
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ball") && _statusOff.activeSelf)
         {
-            foreach (Door door in _doors)
-                door.ButtonPressed();
+            OpenConnectedDoors();
             _statusOff.SetActive(false);
             _statusOn.SetActive(true);
         }
+    }
+
+    private void OpenConnectedDoors()
+    {
+        foreach (Door door in _doors)
+            door.ButtonPressed();
     }
 }

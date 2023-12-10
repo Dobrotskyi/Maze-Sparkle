@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ShotAgainAbility : Ability
 {
-    public override string Description => "Gives the ability to change direction of a shot";
+    public override string Description => "Gives the ability to change direction of a shot\n *Only after first shot*";
     public override string Name => "Change direction";
     protected override Abilities _abilityType => Abilities.ShootAgain;
 
@@ -14,5 +14,14 @@ public class ShotAgainAbility : Ability
         FindObjectOfType<Ball>().ShootAgain();
         yield return new WaitForEndOfFrame();
         InvokeFinished();
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        Ball player = FindObjectOfType<Ball>();
+        if (player != null && player.CanShoot)
+            _button.interactable = false;
+        else _button.interactable = true;
     }
 }

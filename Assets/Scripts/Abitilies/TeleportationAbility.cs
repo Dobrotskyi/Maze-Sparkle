@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class TeleportationAbility : Ability
 {
-    public override string Description => "Gives the ability to make a shot from a different position";
+    public override string Description => "Gives the ability to make a shot from a different position \n *Only first shot*";
     public override string Name => "Teleportation";
-
+    [Header("Can be null at shop")]
     [SerializeField] private ParticleSystem _effect;
     protected override Abilities _abilityType => Abilities.Teleportation;
     private Ball _playerBall;
@@ -35,6 +35,15 @@ public class TeleportationAbility : Ability
         base.Awake();
 
         _playerBall = FindObjectOfType<Ball>();
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        if (_playerBall != null && !_playerBall.CanShoot)
+            _button.interactable = false;
+        else _button.interactable = true;
     }
 
     private bool CanTeleportInPoint(Vector2 point)
