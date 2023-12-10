@@ -45,10 +45,11 @@ public class ShadowShotTrigger : MonoBehaviour
     private void Update()
     {
         RotateSideTriggersBase();
-        if (_playerBall.ShadowWasShot)
-        {
+        if (_playerBall.ShadowWasShot || _rb.velocity.normalized == Vector2.zero)
             return;
-        }
+
+
+
 
         float magnitudeScale = Mathf.Clamp(_rb.velocity.magnitude, _minMaxClampMagnitude.x, _minMaxClampMagnitude.y);
         List<RaycastHit2D> raycastHits = new(3);

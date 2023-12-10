@@ -7,7 +7,7 @@ public class InGameButton : MonoBehaviour
     [SerializeField] private GameObject _statusOff;
     [SerializeField] private List<Door> _doors;
 
-    private void OnEnable()
+    private void Awake()
     {
         _statusOn.SetActive(false);
         _statusOff.SetActive(true);

@@ -16,7 +16,7 @@ public class DestroyAfterHits : MonoBehaviour
         _bouncesLeftField.text = TouchesLeft.ToString();
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         TouchesLeft--;
 

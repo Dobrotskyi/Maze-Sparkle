@@ -6,7 +6,7 @@ public class Door : MonoBehaviour
     [SerializeField] private GameObject _closedStatus;
     [SerializeField] private ParticleSystem _effect;
 
-    private int _buttonsToOpen = 0;
+    protected int _buttonsToOpen = 0;
 
     public bool IsOpened { private set; get; }
 
@@ -17,6 +17,8 @@ public class Door : MonoBehaviour
 
     public void ButtonPressed()
     {
+        if (_openedStatus == null || _closedStatus == null) return;
+
         if (_openedStatus.activeSelf)
             return;
 
@@ -25,7 +27,7 @@ public class Door : MonoBehaviour
             Open();
     }
 
-    private void Open()
+    protected void Open()
     {
         IsOpened = true;
         _closedStatus.SetActive(false);

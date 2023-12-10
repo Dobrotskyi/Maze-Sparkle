@@ -9,20 +9,24 @@ public class Interactable : MonoBehaviour
     [SerializeField] private ParticleSystem _onDestroyEffect;
     private Rigidbody2D _rb;
     private Animator _animator;
+    private bool _triggerParam;
 
     public void PositionSet()
     {
-        if (GetComponent<Collider2D>().isTrigger)
-            GetComponent<Collider2D>().isTrigger = true;
+        if (!GetComponent<Collider2D>().isTrigger)
+            GetComponent<Collider2D>().isTrigger = _triggerParam;
 
         _rb.velocity = Vector2.zero;
         _rb.constraints = RigidbodyConstraints2D.FreezeAll;
     }
 
-    public void DragTowards(Vector2 point)
+    public virtual void DragTowards(Vector2 point)
     {
         if (GetComponent<Collider2D>().isTrigger)
+        {
+            _triggerParam = true;
             GetComponent<Collider2D>().isTrigger = false;
+        }
 
         _rb.velocity = Vector2.zero;
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
@@ -43,7 +47,7 @@ public class Interactable : MonoBehaviour
         _rb.gravityScale = 0;
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         List<IInteractableAbility> abilities = FindObjectsOfType<MonoBehaviour>(true).OfType<IInteractableAbility>().ToList();
         foreach (var ability in abilities)
@@ -53,7 +57,7 @@ public class Interactable : MonoBehaviour
         }
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         List<IInteractableAbility> abilities = FindObjectsOfType<MonoBehaviour>(true).OfType<IInteractableAbility>().ToList();
         foreach (var ability in abilities)

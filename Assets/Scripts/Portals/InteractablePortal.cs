@@ -1,5 +1,8 @@
+using UnityEngine;
+
 public class InteractablePortal : Interactable
 {
+    [SerializeField] private bool _interactable = true;
     private bool _interacting = false;
     public override void DestroySelf()
     {
@@ -10,4 +13,21 @@ public class InteractablePortal : Interactable
         base.DestroySelf();
     }
 
+    public override void DragTowards(Vector2 point)
+    {
+        if (_interactable)
+            base.DragTowards(point);
+    }
+
+    protected override void OnEnable()
+    {
+        if (_interactable)
+            base.OnEnable();
+    }
+
+    protected override void OnDisable()
+    {
+        if (_interactable)
+            base.OnDisable();
+    }
 }

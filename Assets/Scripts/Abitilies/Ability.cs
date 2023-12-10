@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public abstract class Ability : MonoBehaviour
 {
-    public static bool AbilityInUse { protected set; get; }
+    public static bool AbilityInUse { private set; get; }
     public event Action Started;
     public event Action Finished;
 
@@ -57,12 +57,15 @@ public abstract class Ability : MonoBehaviour
 
     protected void InvokeCanceled()
     {
-        if (AbilityInUse)
-        {
-            _dummy.StopAllCoroutines();
-            AbilityInUse = false;
-            Finished?.Invoke();
-        }
+        _dummy.StopAllCoroutines();
+        AbilityInUse = false;
+        Finished?.Invoke();
+        //if (AbilityInUse)
+        //{
+        //    //_dummy.StopAllCoroutines();
+        //    AbilityInUse = false;
+        //    Finished?.Invoke();
+        //}
     }
 
     protected void InvokeFinished()
@@ -83,8 +86,9 @@ public abstract class Ability : MonoBehaviour
     protected virtual void Awake()
     {
         _button = transform.GetComponentInChildren<Button>();
-        InvokeCanceled();
-        _dummy = FindObjectOfType<AbilityUseDummy>();
+        _dummy = FindObjectOfType<AbilityUseDummy>(true);
+        if (AbilityInUse)
+            InvokeCanceled();
         CancelUsageButton.AbilityCanceled += InvokeCanceled;
         EndLevelPortal.LevelFinished += InvokeCanceled;
         if (_priceField != null)

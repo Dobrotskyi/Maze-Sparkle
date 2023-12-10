@@ -6,6 +6,7 @@ public static class PlayerInfoHolder
 {
     public const int REWARD = 550;
     private const string COINS_KEY = "Coins";
+    private const string PASSED_LEVELS = "PassedLevels";
 
     public static event Action CoinsAmtUpdated;
     public static Dictionary<Ability.Abilities, int> PriceList = new() {
@@ -31,6 +32,26 @@ public static class PlayerInfoHolder
             PlayerPrefs.SetInt(COINS_KEY, value);
             CoinsAmtUpdated?.Invoke();
         }
+    }
+
+    public static int PassedLevels
+    {
+        get
+        {
+            if (!PlayerPrefs.HasKey(PASSED_LEVELS))
+                PlayerPrefs.SetInt(PASSED_LEVELS, 0);
+            return PlayerPrefs.GetInt(PASSED_LEVELS);
+        }
+        set
+        {
+            PlayerPrefs.SetInt(PASSED_LEVELS + 1, value);
+        }
+    }
+
+    public static void PassedLevel()
+    {
+        Debug.Log("Added passed level");
+        //PassedLevels++;
     }
 
     public static void AddCoins(int amt)

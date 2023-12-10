@@ -187,7 +187,6 @@ public class Ball : MonoBehaviour
         {
             if (CanShoot)
             {
-                GameTimeScaler.ChangeTimeScale(_slowMotion);
 
                 Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
                 //transform.right = dir * 1;
@@ -199,7 +198,7 @@ public class Ball : MonoBehaviour
             {
                 if (!ShadowWasShot && CanShootShadow)
                 {
-                    GameTimeScaler.ChangeTimeScale(_slowMotion);
+                    //GameTimeScaler.ChangeTimeScale(_slowMotion);
 
                     Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
                     //transform.right = dir * 1;
@@ -294,7 +293,7 @@ public class Ball : MonoBehaviour
             Shoot();
             screenLine.enabled = false;
             line.enabled = false;
-            GameTimeScaler.ResetTimeScale();
+            //GameTimeScaler.ResetTimeScale();
             isAiming = false;
         }
         else
@@ -346,12 +345,16 @@ public class Ball : MonoBehaviour
     }
     private void Shoot()
     {
+        if ((direction.position - transform.position).normalized == Vector3.zero)
+            return;
         CanShoot = false;
         rb.velocity = (direction.position - transform.position).normalized * shootPower;
     }
 
     private void ShootShadow()
     {
+        if ((direction.position - transform.position).normalized == Vector3.zero)
+            return;
         ShadowWasShot = true;
         CanShootShadow = false;
         GameObject shadow = Instantiate(_shadowPrefab, transform.position, Quaternion.identity);

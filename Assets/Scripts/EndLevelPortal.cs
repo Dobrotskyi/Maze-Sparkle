@@ -16,4 +16,10 @@ public class EndLevelPortal : Door
             Destroy(player.gameObject);
         }
     }
+
+    private void Start()
+    {
+        if (_buttonsToOpen == 0)
+            Open();
+    }
 }
