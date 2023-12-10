@@ -27,13 +27,15 @@ public abstract class Ability : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _priceField;
     protected Button _button;
 
+    private AbilityUseDummy _dummy;
+
     protected abstract IEnumerator Use();
     public void UseAbility()
     {
         if (Amount == 0)
             return;
         if (!AbilityInUse)
-            FindObjectOfType<AbilityUseDummy>().StartCoroutine(Use());
+            _dummy.StartCoroutine(Use());
     }
 
     public void ShowInfo()
@@ -55,9 +57,12 @@ public abstract class Ability : MonoBehaviour
 
     protected void InvokeCanceled()
     {
-        StopAllCoroutines();
-        AbilityInUse = false;
-        Finished?.Invoke();
+        if (AbilityInUse)
+        {
+            _dummy.StopAllCoroutines();
+            AbilityInUse = false;
+            Finished?.Invoke();
+        }
     }
 
     protected void InvokeFinished()
@@ -79,12 +84,15 @@ public abstract class Ability : MonoBehaviour
     {
         _button = transform.GetComponentInChildren<Button>();
         InvokeCanceled();
+        _dummy = FindObjectOfType<AbilityUseDummy>();
         CancelUsageButton.AbilityCanceled += InvokeCanceled;
+        EndLevelPortal.LevelFinished += InvokeCanceled;
     }
 
     private void OnDestroy()
     {
         CancelUsageButton.AbilityCanceled -= InvokeCanceled;
+        EndLevelPortal.LevelFinished -= InvokeCanceled;
     }
 
     protected virtual void OnEnable()

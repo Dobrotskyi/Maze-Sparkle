@@ -8,6 +8,8 @@ public class Door : MonoBehaviour
 
     private int _buttonsToOpen = 0;
 
+    public bool IsOpened { private set; get; }
+
     public void AddToOpenButtons()
     {
         _buttonsToOpen++;
@@ -25,6 +27,7 @@ public class Door : MonoBehaviour
 
     private void Open()
     {
+        IsOpened = true;
         _closedStatus.SetActive(false);
         _openedStatus.SetActive(true);
         _effect.gameObject.SetActive(true);

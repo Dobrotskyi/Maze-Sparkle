@@ -30,14 +30,14 @@ public class ShadowShotTrigger : MonoBehaviour
     }
 
     private Rigidbody2D _rb;
-    private Ball _dragAndShoot;
+    private Ball _playerBall;
 
     private GameObject _objectToHit;
     float _timeToHitObject = 0;
 
     private void Awake()
     {
-        _dragAndShoot = GetComponent<Ball>();
+        _playerBall = GetComponent<Ball>();
         _rb = GetComponent<Rigidbody2D>();
         SetUpSideTriggers();
     }
@@ -45,6 +45,10 @@ public class ShadowShotTrigger : MonoBehaviour
     private void Update()
     {
         RotateSideTriggersBase();
+        if (_playerBall.ShadowWasShot)
+        {
+            return;
+        }
 
         float magnitudeScale = Mathf.Clamp(_rb.velocity.magnitude, _minMaxClampMagnitude.x, _minMaxClampMagnitude.y);
         List<RaycastHit2D> raycastHits = new(3);
@@ -72,8 +76,8 @@ public class ShadowShotTrigger : MonoBehaviour
             {
                 _objectToHit = raycastHits[minDistanceIndex].transform.gameObject;
                 StopAllCoroutines();
-                _dragAndShoot.CanShootShadow = true;
-                float slowMotion = Mathf.Clamp(_dragAndShoot.SlowMotion - 0.05f * magnitudeScale, 0.1f, _dragAndShoot.SlowMotion);
+                _playerBall.CanShootShadow = true;
+                float slowMotion = Mathf.Clamp(_playerBall.SlowMotion - 0.05f * magnitudeScale, 0.1f, _playerBall.SlowMotion);
                 _timeToHitObject = Time.time;
                 GameTimeScaler.ChangeTimeScale(slowMotion);
             }
@@ -99,7 +103,7 @@ public class ShadowShotTrigger : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (gameObject.activeSelf && _objectToHit != null)
+        if (gameObject.activeSelf && _objectToHit != null && _playerBall.CanShootShadow)
         {
             StartCoroutine(DisableShadowShooting());
         }
@@ -107,7 +111,7 @@ public class ShadowShotTrigger : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (gameObject.activeSelf && _objectToHit != null)
+        if (gameObject.activeSelf && _objectToHit != null && _playerBall.CanShootShadow)
         {
             StartCoroutine(DisableShadowShooting());
         }
@@ -117,7 +121,7 @@ public class ShadowShotTrigger : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(Mathf.Clamp(Time.time + 0.1f - _timeToHitObject, _minMaxSecondsAfterHit.x, _minMaxSecondsAfterHit.y));
         GameTimeScaler.ResetTimeScale();
-        _dragAndShoot.CanShootShadow = false;
+        _playerBall.CanShootShadow = false;
         _objectToHit = null;
     }
 

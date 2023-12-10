@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class PlayerInfoHolder
 {
+    public const int REWARD = 550;
     private const string COINS_KEY = "Coins";
 
     public static event Action CoinsAmtUpdated;

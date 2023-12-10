@@ -22,7 +22,7 @@ public class InGameButton : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ball") && _statusOff.activeSelf)
+        if ((collision.gameObject.CompareTag("Ball") || collision.gameObject.CompareTag("ShadowBall")) && _statusOff.activeSelf)
         {
             OpenConnectedDoors();
             _statusOff.SetActive(false);

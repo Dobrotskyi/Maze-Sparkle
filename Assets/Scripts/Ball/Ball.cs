@@ -52,7 +52,7 @@ public class Ball : MonoBehaviour
     [SerializeField] private float _tailLineDivider = 3;
     [SerializeField] private Transform _spriteTransform;
     private Animator _animator;
-    private bool _shadowWasShot;
+    public bool ShadowWasShot { private set; get; }
     private bool _bouncing;
 
     public void ShootAgain()
@@ -197,7 +197,7 @@ public class Ball : MonoBehaviour
 
             else
             {
-                if (!_shadowWasShot && CanShootShadow)
+                if (!ShadowWasShot && CanShootShadow)
                 {
                     GameTimeScaler.ChangeTimeScale(_slowMotion);
 
@@ -266,7 +266,7 @@ public class Ball : MonoBehaviour
         }
         else
         {
-            if (CanShoot || (!_shadowWasShot && CanShootShadow))
+            if (CanShoot || (!ShadowWasShot && CanShootShadow))
             {
                 Aim();
                 DrawLine();
@@ -309,7 +309,7 @@ public class Ball : MonoBehaviour
             }
             else
             {
-                if (!_shadowWasShot && CanShootShadow)
+                if (!ShadowWasShot && CanShootShadow)
                 {
                     ShootShadow();
                     screenLine.enabled = false;
@@ -352,7 +352,8 @@ public class Ball : MonoBehaviour
 
     private void ShootShadow()
     {
-        _shadowWasShot = true;
+        ShadowWasShot = true;
+        CanShootShadow = false;
         GameObject shadow = Instantiate(_shadowPrefab, transform.position, Quaternion.identity);
         Rigidbody2D shadowRb = shadow.GetComponent<Rigidbody2D>();
         shadowRb.velocity = (direction.position - transform.position).normalized * shootPower;
