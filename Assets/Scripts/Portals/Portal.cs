@@ -7,10 +7,23 @@ public class Portal : MonoBehaviour
     [SerializeField] private GameObject _statusOn;
     [SerializeField] private GameObject _statusOff;
 
+    public Portal ConnectedPortal => _connectedPortal;
+
     private void OnEnable()
     {
         _statusOn.SetActive(true);
         _statusOff.SetActive(false);
+
+        var main = GetComponentInChildren<ParticleSystem>(true).main;
+        var newStartRotation = main.startRotation;
+        newStartRotation.constant = transform.rotation.eulerAngles.z * Mathf.Deg2Rad;
+        main.startRotation = newStartRotation;
+    }
+
+    private void OnDestroy()
+    {
+        if (_connectedPortal != null)
+            Destroy(_connectedPortal.gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

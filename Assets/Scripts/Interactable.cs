@@ -12,19 +12,25 @@ public class Interactable : MonoBehaviour
 
     public void PositionSet()
     {
+        if (GetComponent<Collider2D>().isTrigger)
+            GetComponent<Collider2D>().isTrigger = true;
+
         _rb.velocity = Vector2.zero;
         _rb.constraints = RigidbodyConstraints2D.FreezeAll;
     }
 
     public void DragTowards(Vector2 point)
     {
+        if (GetComponent<Collider2D>().isTrigger)
+            GetComponent<Collider2D>().isTrigger = false;
+
         _rb.velocity = Vector2.zero;
         _rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         Vector2 direction = point - (Vector2)transform.position;
         _rb.MovePosition((Vector2)transform.position + direction * Time.deltaTime * 200f);
     }
 
-    public void DestroySelf()
+    public virtual void DestroySelf()
     {
         Instantiate(_onDestroyEffect, transform.position, Quaternion.identity);
         Destroy(gameObject);
@@ -34,6 +40,7 @@ public class Interactable : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
+        _rb.gravityScale = 0;
     }
 
     private void OnEnable()
