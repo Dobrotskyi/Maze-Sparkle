@@ -281,6 +281,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onDestroyEffect: {fileID: 7180918455190229001, guid: ae1f853eebe6567469be361c9024a882, type: 3}
+  _enableDragging: 1
+  _destroyedAudioClip: {fileID: 8300000, guid: 8dfcae34791b3a447b81d6653208f596, type: 3}
 --- !u!50 &7420748222141466400
 Rigidbody2D:
   serializedVersion: 4

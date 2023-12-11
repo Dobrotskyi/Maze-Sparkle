@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SoundPlayer : MonoBehaviour
 {
@@ -8,15 +9,23 @@ public class SoundPlayer : MonoBehaviour
     [SerializeField] private AudioSource _musicAS;
     [SerializeField] private AudioSource _soundAS;
     [SerializeField] private float _musicVolume = 0.5f;
+    Button[] _buttons;
 
     private void Awake()
     {
+        if (SoundSettings.MusicMuted)
+            _musicAS.volume = 0;
         SoundSettings.OnSettingsChanged += OnAudioSettingsChanged;
+        _buttons = FindObjectsOfType<Button>(true);
+        foreach (var button in _buttons)
+            button.onClick.AddListener(PlayClickSound);
     }
 
     private void OnDestroy()
     {
         SoundSettings.OnSettingsChanged -= OnAudioSettingsChanged;
+        foreach (var button in _buttons)
+            button.onClick.RemoveListener(PlayClickSound);
     }
 
     private void OnAudioSettingsChanged()
@@ -25,5 +34,11 @@ public class SoundPlayer : MonoBehaviour
             _musicAS.volume = _musicVolume;
         else if (_musicAS.volume != 0 && SoundSettings.MusicMuted)
             _musicAS.volume = 0;
+    }
+
+    private void PlayClickSound()
+    {
+        if (!SoundSettings.AudioMuted)
+            _soundAS.Play();
     }
 }

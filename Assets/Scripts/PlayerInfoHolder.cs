@@ -11,8 +11,8 @@ public static class PlayerInfoHolder
 
     public static event Action CoinsAmtUpdated;
     public static Dictionary<Ability.Abilities, int> PriceList = new() {
-        { Ability.Abilities.Finger, 240 },
-        {Ability.Abilities.Hammer, 300 },
+        { Ability.Abilities.Finger, 300 },
+        {Ability.Abilities.Hammer, 320 },
         {Ability.Abilities.Teleportation, 350 },
         {Ability.Abilities.ShootAgain, 400 }
     };
@@ -52,7 +52,6 @@ public static class PlayerInfoHolder
     public static void LevelIsPassed()
     {
         PassedLevels += 1;
-        Debug.Log(PassedLevels);
         if (PassedLevels == SceneManager.sceneCountInBuildSettings - 2)
             PlayerPrefs.SetInt(PASSED_LEVELS, 0);
     }

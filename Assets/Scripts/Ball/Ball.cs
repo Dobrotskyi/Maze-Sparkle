@@ -187,8 +187,6 @@ public class Ball : MonoBehaviour
         {
             if (CanShoot)
             {
-
-                Debug.Log(_shadowBouncinesField.activeSelf);
                 if (_shadowBouncinesField.activeSelf)
                     _shadowBouncinesField.SetActive(false);
 

@@ -8,6 +8,7 @@ public class Interactable : MonoBehaviour
 {
     [SerializeField] private ParticleSystem _onDestroyEffect;
     [SerializeField] private bool _enableDragging = true;
+    [SerializeField] private AudioClip _destroyedAudioClip;
     private Rigidbody2D _rb;
     private Animator _animator;
     private bool _triggerParam;
@@ -29,6 +30,16 @@ public class Interactable : MonoBehaviour
     public virtual void DestroySelf()
     {
         Instantiate(_onDestroyEffect, transform.position, Quaternion.identity);
+        if (!SoundSettings.AudioMuted)
+        {
+            GameObject soundPlayer = new();
+            var audioSource = soundPlayer.AddComponent<AudioSource>();
+            audioSource.volume = SoundSettings.EFFECTS_VOLUME;
+            audioSource.clip = _destroyedAudioClip;
+            audioSource.playOnAwake = false;
+            audioSource.Play();
+            Destroy(audioSource, audioSource.clip.length);
+        }
         Destroy(gameObject);
     }
 
