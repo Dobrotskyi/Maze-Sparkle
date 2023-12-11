@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class PlayerInfoHolder
 {
@@ -44,14 +45,16 @@ public static class PlayerInfoHolder
         }
         set
         {
-            PlayerPrefs.SetInt(PASSED_LEVELS + 1, value);
+            PlayerPrefs.SetInt(PASSED_LEVELS, value);
         }
     }
 
-    public static void PassedLevel()
+    public static void LevelIsPassed()
     {
-        Debug.Log("Added passed level");
-        //PassedLevels++;
+        PassedLevels += 1;
+        Debug.Log(PassedLevels);
+        if (PassedLevels == SceneManager.sceneCountInBuildSettings - 2)
+            PlayerPrefs.SetInt(PASSED_LEVELS, 0);
     }
 
     public static void AddCoins(int amt)

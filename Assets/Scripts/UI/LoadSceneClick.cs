@@ -14,7 +14,7 @@ public class LoadSceneClick : MonoBehaviour
         if (buildIndex == SceneManager.sceneCountInBuildSettings - 1)
             LevelLoader.LoadScene("MainMenu");
         else
-            LevelLoader.LoadScene("Level_" + (buildIndex).ToString());
+            LevelLoader.LoadScene("Level_" + (PlayerInfoHolder.PassedLevels + 1));
     }
 
     public void ReloadCurrent()

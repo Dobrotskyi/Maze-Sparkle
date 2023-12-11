@@ -188,8 +188,11 @@ public class Ball : MonoBehaviour
             if (CanShoot)
             {
 
+                Debug.Log(_shadowBouncinesField.activeSelf);
+                if (_shadowBouncinesField.activeSelf)
+                    _shadowBouncinesField.SetActive(false);
+
                 Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-                //transform.right = dir * 1;
 
                 startMousePos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
             }
@@ -198,10 +201,7 @@ public class Ball : MonoBehaviour
             {
                 if (!ShadowWasShot && CanShootShadow)
                 {
-                    //GameTimeScaler.ChangeTimeScale(_slowMotion);
-
                     Vector2 dir = transform.position - Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-                    //transform.right = dir * 1;
 
                     startMousePos = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 
@@ -278,7 +278,7 @@ public class Ball : MonoBehaviour
                 if (distance > 0.1f)
                 {
                     line.enabled = true;
-                    if (CanShootShadow)
+                    if (CanShootShadow && !CanShoot)
                         _shadowBouncinesField.SetActive(true);
                     if (showLineOnScreen)
                         screenLine.enabled = true;

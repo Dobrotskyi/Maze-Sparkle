@@ -6,14 +6,18 @@ public class MovingWall : MonoBehaviour
     [SerializeField] private Vector3 _secondPoint;
     [SerializeField] private float _speed;
     private bool _movingToSecond = true;
+    private Rigidbody2D _rb;
 
     private void Awake()
     {
         transform.position = _firstPoint;
+        _rb = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
+        if (_rb && _rb.velocity.normalized != Vector2.zero)
+            _rb.velocity = Vector2.zero;
         if (_movingToSecond)
             MoveWallTowards(_secondPoint);
         else

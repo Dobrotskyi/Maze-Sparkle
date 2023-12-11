@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TeleportationAbility : Ability
 {
-    public override string Description => "Gives the ability to make a shot from a different position \n *Only first shot*";
+    public override string Description => "Gives the ability to make a shot from a different position \n *Only before shot*";
     public override string Name => "Teleportation";
     [Header("Can be null at shop")]
     [SerializeField] private ParticleSystem _effect;

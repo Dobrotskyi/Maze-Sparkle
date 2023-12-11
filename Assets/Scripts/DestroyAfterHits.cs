@@ -10,14 +10,20 @@ public class DestroyAfterHits : MonoBehaviour
 
     public int TouchesLeft { get; private set; }
 
-    private void OnEnable()
+    private void Awake()
     {
         TouchesLeft = _maxTouches;
+    }
+
+    private void OnEnable()
+    {
         _bouncesLeftField.text = TouchesLeft.ToString();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (!enabled)
+            return;
         TouchesLeft--;
 
         if ((!_destroyAfter0 && TouchesLeft == 0) || TouchesLeft < 0)
