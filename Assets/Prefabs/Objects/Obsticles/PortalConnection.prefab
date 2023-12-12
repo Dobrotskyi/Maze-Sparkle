@@ -124,7 +124,7 @@ Rigidbody2D:
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 7
 --- !u!95 &8191804639029160464
 Animator:
   serializedVersion: 5
@@ -159,6 +159,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onDestroyEffect: {fileID: 7180918455190229001, guid: 33466767821640148be6db55a92e270c, type: 3}
+  _enableDragging: 1
+  _destroyedAudioClip: {fileID: 0}
   _interactable: 1
 --- !u!1 &1039609698195333455
 GameObject:
@@ -370,7 +372,7 @@ Rigidbody2D:
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 7
 --- !u!95 &8154626419184118742
 Animator:
   serializedVersion: 5
@@ -405,6 +407,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onDestroyEffect: {fileID: 7180918455190229001, guid: 33466767821640148be6db55a92e270c, type: 3}
+  _enableDragging: 1
+  _destroyedAudioClip: {fileID: 0}
   _interactable: 1
 --- !u!1 &4769580828315157897
 GameObject:
