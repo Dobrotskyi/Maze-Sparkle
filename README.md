@@ -3,6 +3,8 @@
 "Maze Sparkle" immerses players in an intriguing maze adventure where a propelled ball, guided by the player, navigates obstacles and puzzles on its way to the labyrinth's exit. Unleash your strategic prowess as you anticipate rebound trajectories and
 harness the shadows cast by the main ball.
 
+You can watch game footage via link: [link](https://youtu.be/RY7LvvYeq54)
+
 # Here are some screenshots.
 
 ![Image Sequence_001_0030](https://github.com/Dobrotskyi/Maze-Sparkle/assets/118120050/d978322b-91cf-4b47-9e8c-1c34b8114626)
